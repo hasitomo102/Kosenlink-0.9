@@ -37,17 +37,17 @@ const data = [
     stat: '12,543',
     data: shop
   },
-  {
-    category: 'Mobile App',
-    stat: '2,543',
-    data: app
-  }
+  // {
+  //   category: 'Mobile App',
+  //   stat: '2,543',
+  //   data: app
+  // }
 ];
 
 export default function PlaygroundPage() {
   return (
     <main className="p-4 md:p-10 mx-auto max-w-7xl">
-      <Grid numItemsSm={2} numItemsLg={3} className="gap-6">
+      <Grid numItemsSm={2} numItemsLg={2} className="gap-6">
         {data.map((item) => (
           <Card key={item.category}>
             <Title>{item.category}</Title>

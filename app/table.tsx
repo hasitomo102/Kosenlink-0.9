@@ -15,7 +15,6 @@ export default function UsersTable({ users }: { users: User[] }) {
       <TableHead>
         <TableRow>
           <TableHeaderCell>Name</TableHeaderCell>
-          <TableHeaderCell>Username</TableHeaderCell>
           <TableHeaderCell>Email</TableHeaderCell>
         </TableRow>
       </TableHead>
