@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, Metric, Text, Title, BarList, Flex, Grid } from '@tremor/react';
-import Chart from '@/playground/chart';
+import Chart from '@/app/playground/chart';
 
 const website = [
   { name: '/home', value: 1230 },
