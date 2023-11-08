@@ -24,9 +24,6 @@ export default function UsersTable({ users }: { users: User[] }) {
           <TableRow key={user.id}>
             <TableCell>{user.name}</TableCell>
             <TableCell>
-              <Text>{user.username}</Text>
-            </TableCell>
-            <TableCell>
               <Text>{user.email}</Text>
             </TableCell>
           </TableRow>

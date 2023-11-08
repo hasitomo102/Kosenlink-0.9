@@ -1,10 +1,10 @@
 // This file contains placeholder data that you'll be replacing with real data in the Data Fetching chapter:
-
-import { Invoice } from "@/types/invoices";
-import { User } from "@/types/user";
+// import { Invoice } from "@/types/invoices";
+// import { User } from "@/types/user";
 
 // https://nextjs.org/learn/dashboard-app/fetching-data
-const users: User[] = [
+// const users: User[] = [
+const users = [
   {
     id: '410544b2-4001-4271-9855-fec4b6a6442a',
     name: 'User',
@@ -13,7 +13,8 @@ const users: User[] = [
   },
 ];
 
-const customers: User[] = [
+// const customers: User[] = [
+const customers = [
   {
     id: '3958dc9e-712f-4377-85e9-fec4b6a6442a',
     name: 'Delba de Oliveira',
@@ -76,7 +77,8 @@ const customers: User[] = [
   },
 ];
 
-const invoices: Invoice[] = [
+// const invoices: Invoice[] = [
+const invoices = [
   {
     customer_id: customers[0].id,
     amount: 15795,

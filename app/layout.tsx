@@ -1,4 +1,4 @@
-import '@/globals.css';
+import './globals.css';
 
 import { Analytics } from '@vercel/analytics/react';
 import Nav from '@/app/nav';
