@@ -3,16 +3,19 @@ import NextAuth from 'next-auth';
 import Email from "next-auth/providers/email"
 import PostgresAdapter from "@auth/pg-adapter";
 // import PostgresAdapter from '@/app/lib/postgres-adaptor';
-import { Pool } from 'pg';
+// import { Pool } from 'pg';
+import { FirestoreAdapter } from "@auth/firebase-adapter"
+import { firestore } from '@/app/lib/firebase';
 
 // http guide: https://authjs.dev/guides/providers/email-http
 // smtp guide: https://next-auth.js.org/providers/email
 
 // https://authjs.dev/reference/adapter/pg
-const pool = new Pool();
+// const pool = new Pool();
 
 export default NextAuth({
-  adapter: PostgresAdapter(pool),
+  // adapter: PostgresAdapter(pool),
+  adapter: FirestoreAdapter(firestore),
   secret: process.env.AUTH_SECRET,
   // https://authjs.dev/getting-started/providers/email-tutorial
   providers: [
