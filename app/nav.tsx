@@ -1,7 +1,7 @@
 import Navbar from '@/app/navbar';
-import { auth } from '@/app/auth';
+import { getServerSession } from 'next-auth';
 
 export default async function Nav() {
-  const session = await auth();
+  const session = await getServerSession();
   return <Navbar user={session?.user} />;
 }
