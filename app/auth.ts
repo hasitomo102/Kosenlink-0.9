@@ -1,24 +1,19 @@
 import NextAuth from 'next-auth';
-import Github from "next-auth/providers/github";
+// import Github from "next-auth/providers/github";
 import Email from "next-auth/providers/email"
 import PostgresAdapter from "@auth/pg-adapter";
-import { Pool } from 'pg'
-import { Provider } from 'next-auth/providers';
+// import PostgresAdapter from '@/app/lib/postgres-adaptor';
+import { Pool } from 'pg';
 
 // http guide: https://authjs.dev/guides/providers/email-http
 // smtp guide: https://next-auth.js.org/providers/email
 
 // https://authjs.dev/reference/adapter/pg
-const pool = new Pool({
-  host: 'localhost',
-  user: 'database-user',
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
-});
+const pool = new Pool();
 
 export default NextAuth({
   adapter: PostgresAdapter(pool),
+  secret: process.env.AUTH_SECRET,
   // https://authjs.dev/getting-started/providers/email-tutorial
   providers: [
     // {
@@ -38,11 +33,6 @@ export default NextAuth({
     //   clientId: process.env.OAUTH_CLIENT_KEY as string,
     //   clientSecret: process.env.OAUTH_CLIENT_SECRET as string
     // }),
-    // {
-    //   id: 'sendgrid',
-    //   type: '',
-    //   async sendVerificationRequest({identifier: email, url}) {
-    //   }
     // }
     Email({
       server: {
