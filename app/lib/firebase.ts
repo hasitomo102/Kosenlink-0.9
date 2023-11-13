@@ -10,4 +10,14 @@ export const firestore = initFirestore({
    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
    privateKey: process.env.FIREBASE_PRIVATE_KEY,
  })
-})
+});
+
+type CollectionName = "users" | "invoices";
+
+export /**
+ * Main 
+ *
+ */
+const getCollection = (collectionName: CollectionName) => {
+
+}
