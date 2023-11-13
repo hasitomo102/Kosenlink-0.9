@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "node -r dotenv/config ./scripts/seed.js"
+    "seed": "ts-node -r dotenv/config ./scripts/seed.ts"
   },
   "dependencies": {
     "@auth/firebase-adapter": "^1.0.3",
@@ -43,7 +43,8 @@
   },
   "devDependencies": {
     "dotenv": "^16.3.1",
-    "nodemailer": "^6.9.7"
+    "nodemailer": "^6.9.7",
+    "ts-node": "^10.9.1"
   },
   "browser": {
     "crypto": false
