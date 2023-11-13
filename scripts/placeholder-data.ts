@@ -3,7 +3,7 @@
 import { User } from "@/types/user";
 
 // https://nextjs.org/learn/dashboard-app/fetching-data
-export const users: User[] = [
+const users: User[] = [
 // const users = [
   {
     id: '410544b2-4001-4271-9855-fec4b6a6442a',
@@ -186,9 +186,9 @@ const revenue = [
   { month: 'Dec', revenue: 4800 },
 ];
 
-// module.exports = {
-//   users,
-//   customers,
-//   invoices,
-//   revenue,
-// };
+export {
+  users,
+  customers,
+  invoices,
+  revenue,
+};
