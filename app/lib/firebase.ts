@@ -2,7 +2,10 @@ import { Invoice } from "@/types/invoices";
 import { User } from "@/types/user";
 import { initFirestore } from "@auth/firebase-adapter";
 import { cert } from "firebase-admin/app";
-import { CollectionReference, DocumentData, FirestoreDataConverter, QueryDocumentSnapshot } from "firebase-admin/firestore";
+import { FirestoreDataConverter, QueryDocumentSnapshot } from "firebase-admin/firestore";
+
+// View the firebase admin documentation
+// https://firebase.google.com/docs/reference/admin/node/firebase-admin.firestore.md#firebase-adminfirestore_module
 
 // will initialize firestore safely
 // must init a firebase account and a firestore database
@@ -15,11 +18,8 @@ export const firestore = initFirestore({
  })
 });
 
-// View the firebase admin documentation
-// https://firebase.google.com/docs/reference/admin/node/firebase-admin.firestore.md#firebase-adminfirestore_module
-
 /**
- * Define the schema types in the collections in firebase
+ * Define the types returned from the specific collections in firebase
  *
  * @export
  * @interface CollectionTypes
@@ -29,18 +29,18 @@ export interface CollectionTypes {
   "invoice": Invoice,
 };
 
-// /**
-//  * Generic data type converter from firestore
-//  *
-//  * @template T
-//  */
+/**
+ * Generic data type converter from firestore
+ *
+ * @template T
+ */
 const genericConverter = <T>() => ({
 	toFirestore: (inputData: T) => inputData,
 	fromFirestore: (snapshot: QueryDocumentSnapshot): T => snapshot.data() as T,
 });
 
 
-/**
+export /**
  * Create a collection function, using typecasting and the withConverter function to get typed data back from firestore
  *
  * @template T
