@@ -42,15 +42,30 @@ const genericConverter = <T>() => ({
 
 export /**
  * Create a collection function, using typecasting and the withConverter function to get typed data back from firestore
- *
+ * With fetching, assume return types are all partials
+ * 
  * @template T
  * @param {string} collectionName
  * @return {*}  {CollectionReference<T>}
  */
-const getCollection = <T extends keyof CollectionTypes>(
+const fetchCollection = <T extends keyof CollectionTypes>(
+	collectionName: T
+) => {
+	const converter = genericConverter<Partial<CollectionTypes[T]>>() as FirestoreDataConverter<Partial<CollectionTypes[T]>>;
+	return firestore.collection(collectionName).withConverter<Partial<CollectionTypes[T]>>(converter);
+};
+
+export /**
+ * Create a collection function, using typecasting and the withConverter function to get typed data back from firestore
+ * With mutation, make the necessary fields required
+ * 
+ * @template T
+ * @param {string} collectionName
+ * @return {*}  {CollectionReference<T>}
+ */
+const mutateCollection = <T extends keyof CollectionTypes>(
 	collectionName: T
 ) => {
 	const converter = genericConverter<CollectionTypes[T]>() as FirestoreDataConverter<CollectionTypes[T]>;
-	// return collection(db, collectionName).withConverter<T>(converter);
 	return firestore.collection(collectionName).withConverter<CollectionTypes[T]>(converter);
 };
