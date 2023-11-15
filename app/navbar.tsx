@@ -6,6 +6,7 @@ import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
+import { User } from '@/types/user';
 
 const navigation = [
   { name: 'Dashboard', href: '/' },
@@ -16,7 +17,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Navbar({ user }: { user: any }) {
+export default function Navbar({ user }: { user?: User }) {
   const pathname = usePathname();
 
   return (
@@ -163,7 +164,7 @@ export default function Navbar({ user }: { user: any }) {
                     <div className="flex-shrink-0">
                       <Image
                         className="h-8 w-8 rounded-full"
-                        src={user.image}
+                        src={user.image || ""}
                         height={32}
                         width={32}
                         alt={`${user.name} avatar`}
