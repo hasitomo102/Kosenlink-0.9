@@ -1,7 +1,14 @@
 import { fetchCollection } from "@/app/lib/firebase";
 import { User } from "@/types/user";
 
-export const getUserWithEmail = async (email: string): Promise<User | undefined> => {
+export /**
+ * Function will fetch the user with the associated email
+ *
+ * @param {string} email
+ * @return {*}  {(Promise<User | undefined>)}
+ */
+const getUserWithEmail = async (email?: string | null): Promise<Partial<User> & { id: string } | undefined> => {
+    if (!email) return;
     const search = email.toLowerCase();
 
     // define query
@@ -18,7 +25,7 @@ export /**
  * @param {string} searchString
  * @return {*} 
  */
-const searchUsers = async (searchString: string): Promise<User[]> => {
+const searchUsers = async (searchString: string): Promise<(Partial<User> & { id: string })[]> => {
     const search = searchString.toLowerCase();
 
     // define query
