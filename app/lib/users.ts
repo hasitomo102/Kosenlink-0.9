@@ -3,7 +3,13 @@ import { fetchCollection, mutateCollection } from "@/app/lib/firebase";
 import { User } from "@/types/user";
 import { getServerSession } from "next-auth";
 
-export const updateUser = async (user: { email: string } & Partial<User>) => {
+export /**
+ * Function will update the user object
+ *
+ * @param {({ email: string } & Partial<User>)} user
+ * @return {*} 
+ */
+const updateUser = async (user: { email: string } & Partial<User>) => {
     // check if permissions are correct
     const session = await getServerSession(AuthOptions);
     if (session?.user?.email !== user.email) throw Error(`User ${session?.user?.email} does not have the permission to edit ${user.email}`);
