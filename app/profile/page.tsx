@@ -1,4 +1,4 @@
-import { AuthOptions } from "@/app/auth";
+import { AuthOptions } from "@/app/lib/auth";
 import { getUserWithEmail } from "@/app/lib/users";
 import ProfileForm from "@/app/profile/form";
 import { Button } from "@tremor/react";

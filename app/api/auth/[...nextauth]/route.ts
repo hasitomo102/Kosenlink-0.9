@@ -1,3 +1,3 @@
-import handler from '@/app/auth';
+import handler from '@/app/lib/auth';
 export { handler as GET, handler as POST };
 // export const runtime = 'edge';

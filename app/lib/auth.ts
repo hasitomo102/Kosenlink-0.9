@@ -1,6 +1,6 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
-import Email from "next-auth/providers/email"
-import { FirestoreAdapter } from "@auth/firebase-adapter"
+import Email from "next-auth/providers/email";
+import { FirestoreAdapter } from "@auth/firebase-adapter";
 import { firestore } from '@/app/lib/firebase';
 import { getUserWithEmail } from '@/app/lib/users';
 
@@ -20,6 +20,9 @@ export const AuthOptions = {
           pass: process.env.SMTP_PASSWORD,
         },
       },
+      sendVerificationRequest: () => {
+        
+      },
       from: process.env.EMAIL_FROM,
     }),
   ],
@@ -30,7 +33,7 @@ export const AuthOptions = {
     async signIn({ user }) {
       const userExists = await getUserWithEmail(user.email);
       // email magic link to existing user, otherwise go to profile screen
-      return userExists ? true : "/profile";
+      return !userExists ? true : "/profile";
     },
   }
 } satisfies NextAuthOptions;

@@ -1,4 +1,4 @@
-import { AuthOptions } from '@/app/auth';
+import { AuthOptions } from '@/app/lib/auth';
 import { getUserWithEmail } from '@/app/lib/users';
 import Navbar from '@/app/navbar';
 import { getServerSession } from 'next-auth';
