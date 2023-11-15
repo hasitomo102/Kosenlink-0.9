@@ -1,5 +1,23 @@
-import { fetchCollection } from "@/app/lib/firebase";
+import { AuthOptions } from "@/app/lib/auth";
+import { fetchCollection, mutateCollection } from "@/app/lib/firebase";
 import { User } from "@/types/user";
+import { getServerSession } from "next-auth";
+
+export const updateUser = async (user: { email: string } & Partial<User>) => {
+    // check if permissions are correct
+    const session = await getServerSession(AuthOptions);
+    if (session?.user?.email !== user.email) throw Error(`User ${session?.user?.email} does not have the permission to edit ${user.email}`);
+
+    // get user snapshot
+    const query = await mutateCollection("users").where("email", "==", user.email).get();
+    const userSnapshot = query.docs.at(0);
+
+    // throw error is no user
+    if (!userSnapshot) throw Error(`No user object for ${user.email}`);
+
+    // is there is a user, update it.
+    return userSnapshot.ref.update(user);
+}
 
 export /**
  * Function will fetch the user with the associated email
