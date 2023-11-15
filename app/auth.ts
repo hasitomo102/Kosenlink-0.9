@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import Email from "next-auth/providers/email"
 import { FirestoreAdapter } from "@auth/firebase-adapter"
 import { firestore } from '@/app/lib/firebase';
@@ -22,6 +22,6 @@ export const AuthOptions = {
       from: process.env.EMAIL_FROM,
     }),
   ],
-};
+} satisfies NextAuthOptions;
 
 export default NextAuth(AuthOptions);

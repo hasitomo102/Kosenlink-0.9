@@ -9,7 +9,7 @@ import {
 } from '@tremor/react';
 import { User } from '@/types/user';
 
-export default function UsersTable({ users }: { users: User[] }) {
+export default function UsersTable({ users }: { users: Partial<User>[] }) {
   return (
     <Table>
       <TableHead>
