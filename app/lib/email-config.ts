@@ -8,7 +8,8 @@ import { Theme } from "next-auth";
  *
  * @param {SendVerificationRequestParams} { identifier, url, provider, theme }
  */
-async function sendVerificationRequest({ identifier, url, provider, theme }: SendVerificationRequestParams) {
+export async function sendVerificationRequest(params: SendVerificationRequestParams) {
+  const { identifier, url, provider, theme } = params;
   const { host } = new URL(url);
   // NOTE: You are not required to use `nodemailer`, use whatever you want.
   const transport = createTransport(provider.server);

@@ -3,6 +3,7 @@ import Email from "next-auth/providers/email";
 import { FirestoreAdapter } from "@auth/firebase-adapter";
 import { firestore } from '@/app/lib/firebase';
 import { getUserWithEmail } from '@/app/lib/users';
+import { sendVerificationRequest } from '@/app/lib/email-config';
 
 // http guide: https://authjs.dev/guides/providers/email-http
 // smtp guide: https://next-auth.js.org/providers/email
@@ -20,22 +21,20 @@ export const AuthOptions = {
           pass: process.env.SMTP_PASSWORD,
         },
       },
-      sendVerificationRequest: () => {
-        
-      },
+      sendVerificationRequest: sendVerificationRequest,
       from: process.env.EMAIL_FROM,
     }),
   ],
 
   // only send magic links to existing users
   // https://next-auth.js.org/providers/email#sending-magic-links-to-existing-users
-  callbacks: {
-    async signIn({ user }) {
-      const userExists = await getUserWithEmail(user.email);
-      // email magic link to existing user, otherwise go to profile screen
-      return !userExists ? true : "/profile";
-    },
-  }
+  // callbacks: {
+  //   async signIn({ user }) {
+  //     const userExists = await getUserWithEmail(user.email);
+  //     // email magic link to existing user, otherwise go to profile screen
+  //     return !userExists ? true : "/profile";
+  //   },
+  // }
 } satisfies NextAuthOptions;
 
 export default NextAuth(AuthOptions);
