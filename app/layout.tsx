@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 import Nav from '@/app/nav';
 import Toast from '@/app/toast';
 import { Suspense } from 'react';
+import { SessionProvider } from 'next-auth/react';
 
 export const metadata = {
   title: 'Next.js App Router + NextAuth + Tailwind CSS',
@@ -22,7 +23,7 @@ export default function RootLayout({
         {/* <Suspense> */}
           <Nav />
         {/* </Suspense> */}
-        {children}
+          {children}
         <Analytics />
         <Toast />
       </body>

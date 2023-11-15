@@ -1,5 +1,8 @@
+import { AuthOptions } from "@/app/auth";
+import { getUserWithEmail } from "@/app/lib/users";
 import ProfileForm from "@/app/profile/form";
 import { Button } from "@tremor/react";
+import { getServerSession } from "next-auth";
 import { signOut } from "next-auth/react";
 
 /**
@@ -8,10 +11,13 @@ import { signOut } from "next-auth/react";
  * @export
  * @return {*} 
  */
-export default function Profile() {
+export default async function Profile() {
+    const session = await getServerSession(AuthOptions);
+    // fetch the user with the email
+    const user = await getUserWithEmail(session?.user?.email, true);
     return (
       <main className="p-4 md:p-10 mx-auto max-w-7xl">
-        <ProfileForm />
+        <ProfileForm user={user} />
       </main>
     )
   }

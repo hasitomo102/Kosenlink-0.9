@@ -7,4 +7,6 @@ import { User as AuthUser } from "next-auth";
 // base user object
 export interface User extends AuthUser {
     emailVerified: Timestamp;
+    firstName: string;
+    lastName: string;
 };

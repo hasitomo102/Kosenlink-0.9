@@ -7,7 +7,7 @@ export /**
  * @param {string} email
  * @return {*}  {(Promise<User | undefined>)}
  */
-const getUserWithEmail = async (email?: string | null): Promise<Partial<User> & { id: string } | undefined> => {
+const getUserWithEmail = async (email?: string | null, makePlainObject = false): Promise<Partial<User> & { id: string } | undefined> => {
     if (!email) return;
     const search = email.toLowerCase();
 
@@ -16,7 +16,13 @@ const getUserWithEmail = async (email?: string | null): Promise<Partial<User> & 
     const snapshot = await query.get();
 
     // return user objects, making sure id is required
-    return snapshot.docs.map((userDoc) => ({ ...userDoc.data(), id: userDoc.id })).at(0);
+    const userData = snapshot.docs.map((userDoc) => ({ ...userDoc.data(), id: userDoc.id })).at(0);
+
+    // make plain object
+    if (makePlainObject) {
+        delete userData?.emailVerified;
+    }
+    return userData;
 }
 
 export /**
