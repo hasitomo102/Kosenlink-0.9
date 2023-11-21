@@ -31,12 +31,12 @@ export async function updateProfileData(formData: FormData) {
 
   // get the user profile
   console.log("Getting the server session");
-  // const session = await getServerSession(AuthOptions);
-  // if (!session?.user?.email) throw Error("User is not authenticated");
+  const session = await getServerSession(AuthOptions);
+  if (!session?.user?.email) throw Error("User is not authenticated");
   
   // update the database
   console.log("updating hte user");
-  updateUser({ ...parsedData, email: "kekoawong10@gmail.com"});
+  // updateUser({ ...parsedData, email: "kekoawong10@gmail.com"});
 
   // revalidate path
   // revalidatePath('/profile');

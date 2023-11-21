@@ -20,6 +20,7 @@ const updateUser = async (user: { email: string } & Partial<User>) => {
 
     // throw error is no user
     if (!userSnapshot) throw Error(`No user object for ${user.email}`);
+    console.log("Updated user");
 
     // is there is a user, update it.
     return userSnapshot.ref.update(user);
