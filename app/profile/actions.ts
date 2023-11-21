@@ -23,18 +23,21 @@ const FormSchema = z.object({
  */
 export async function updateProfileData(formData: FormData) {
   // parse the data
+  console.log("Parsing the data");
   const parsedData = FormSchema.parse({
     firstName: formData.get('firstName'),
     lastName: formData.get('lastName'),
   });
 
   // get the user profile
-  const session = await getServerSession(AuthOptions);
-  if (!session?.user?.email) throw Error("User is not authenticated");
+  console.log("Getting the server session");
+  // const session = await getServerSession(AuthOptions);
+  // if (!session?.user?.email) throw Error("User is not authenticated");
   
   // update the database
-  updateUser({ ...parsedData, email: session.user.email });
+  console.log("updating hte user");
+  updateUser({ ...parsedData, email: "kekoawong10@gmail.com"});
 
   // revalidate path
-  revalidatePath('/profile'); 
+  // revalidatePath('/profile');
 }
