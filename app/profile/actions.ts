@@ -2,7 +2,6 @@
 
 import { AuthOptions } from "@/app/lib/auth";
 import { updateUser } from "@/app/lib/users";
-import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 

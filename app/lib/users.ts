@@ -1,7 +1,6 @@
 import { AuthOptions } from "@/app/lib/auth";
 import { fetchCollection, mutateCollection } from "@/app/lib/firebase";
 import { User } from "@/types/user";
-import { getServerSession } from "next-auth";
 
 export /**
  * Function will update the user object

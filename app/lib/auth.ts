@@ -1,5 +1,4 @@
 import NextAuth, { NextAuthConfig } from 'next-auth';
-import Email from "next-auth/providers/email";
 import { FirestoreAdapter } from "@auth/firebase-adapter";
 import { firestore } from '@/app/lib/firebase';
 import { getUserWithEmail } from '@/app/lib/users';
@@ -29,18 +28,6 @@ export const AuthOptions = {
       sendVerificationRequest: sendVerificationRequest,
       options: {},
     },
-    // Email({
-    //   server: {
-    //     host: process.env.SMTP_HOST,
-    //     port: Number(process.env.SMTP_PORT),
-    //     auth: {
-    //       user: process.env.SMTP_USER,
-    //       pass: process.env.SMTP_PASSWORD,
-    //     },
-    //   },
-    //   sendVerificationRequest: sendVerificationRequest,
-    //   from: process.env.EMAIL_FROM,
-    // }),
   ],
 
   // only send magic links to existing users
@@ -54,6 +41,7 @@ export const AuthOptions = {
   // }
 } satisfies NextAuthConfig;
 
-const MainAuth = NextAuth(AuthOptions);
-export default MainAuth;
-const { auth } = MainAuth;
+export const {
+  handlers: { GET, POST },
+  auth,
+} = NextAuth(AuthOptions);
