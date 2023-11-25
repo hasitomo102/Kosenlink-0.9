@@ -5,7 +5,7 @@ import { User } from "@/types/user";
 import { Button } from "@tremor/react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { z } from "zod";
 
 /**
@@ -28,12 +28,6 @@ export default function ProfileForm({ user }: { user?: Partial<User> }) {
     // State to manage form data and errors
     const [formData, setFormData] = useState({ firstName: '', lastName: '' });
     const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
-
-    // Handle form input changes
-    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData({[name]: value });
-    };
 
     // Handle form submission
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -86,8 +80,4 @@ export default function ProfileForm({ user }: { user?: Partial<User> }) {
         }
       </div>
     )
-  }
-
-function useState(arg0: { firstName: string; lastName: string; }): [any, any] {
-    throw new Error("Function not implemented.");
 }

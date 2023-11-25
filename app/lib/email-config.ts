@@ -1,6 +1,5 @@
 import { createTransport } from "nodemailer";
 import { SendVerificationRequestParams } from "next-auth/providers";
-import { Theme } from "next-auth";
 
 /**
  * Function to send verification request
@@ -34,7 +33,7 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
  *
  * @note We don't add the email address to avoid needing to escape it, if you do, remember to sanitize it!
  */
-function html(params: { url: string, host: string, theme: Theme }) {
+function html(params: { url: string, host: string, theme: any }) {
   const { url, host, theme } = params
 
   const escapedHost = host.replace(/\./g, "&#8203;.")

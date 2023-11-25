@@ -1,6 +1,6 @@
 'use server';
 
-import { AuthOptions } from "@/app/lib/auth";
+import { AuthOptions, auth } from "@/app/lib/auth";
 import { updateUser } from "@/app/lib/users";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -29,7 +29,7 @@ export async function updateProfileData(formData: FormData) {
 
   // get the user profile
   console.log("Getting the server session");
-  const session = await getServerSession(AuthOptions);
+  const session = await auth();
   if (!session?.user?.email) throw Error("User is not authenticated");
   
   // update the database

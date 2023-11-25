@@ -1,4 +1,4 @@
-import { AuthOptions } from "@/app/lib/auth";
+import { AuthOptions, auth } from "@/app/lib/auth";
 import { fetchCollection, mutateCollection } from "@/app/lib/firebase";
 import { User } from "@/types/user";
 
@@ -10,7 +10,7 @@ export /**
  */
 const updateUser = async (user: { email: string } & Partial<User>) => {
     // check if permissions are correct
-    const session = await getServerSession(AuthOptions);
+    const session = await auth();
     if (session?.user?.email !== user.email) throw Error(`User ${session?.user?.email} does not have the permission to edit ${user.email}`);
 
     // get user snapshot

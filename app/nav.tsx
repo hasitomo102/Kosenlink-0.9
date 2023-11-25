@@ -1,10 +1,9 @@
-import { AuthOptions } from '@/app/lib/auth';
+import { auth } from '@/app/lib/auth';
 import { getUserWithEmail } from '@/app/lib/users';
 import Navbar from '@/app/navbar';
-import { getServerSession } from 'next-auth';
 
 export default async function Nav() {
-  const session = await getServerSession(AuthOptions);
+  const session = await auth();
   // fetch the user with the email
   const user = await getUserWithEmail(session?.user?.email, true);
   return <Navbar user={user} />;
