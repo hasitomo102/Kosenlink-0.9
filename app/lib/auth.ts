@@ -1,4 +1,4 @@
-import NextAuth, { NextAuthOptions } from 'next-auth';
+import NextAuth, { NextAuthConfig } from 'next-auth';
 import Email from "next-auth/providers/email";
 import { FirestoreAdapter } from "@auth/firebase-adapter";
 import { firestore } from '@/app/lib/firebase';
@@ -12,7 +12,10 @@ export const AuthOptions = {
   secret: process.env.AUTH_SECRET,
   // https://authjs.dev/getting-started/providers/email-tutorial
   providers: [
-    Email({
+    {
+      id: 'email',
+      name: 'Email',
+      type: 'email',
       server: {
         host: process.env.SMTP_HOST,
         port: Number(process.env.SMTP_PORT),
@@ -21,9 +24,23 @@ export const AuthOptions = {
           pass: process.env.SMTP_PASSWORD,
         },
       },
+      from: process.env.EMAIL_FROM || "",
+      maxAge: 24 * 60 * 60,
       sendVerificationRequest: sendVerificationRequest,
-      from: process.env.EMAIL_FROM,
-    }),
+      options: {},
+    },
+    // Email({
+    //   server: {
+    //     host: process.env.SMTP_HOST,
+    //     port: Number(process.env.SMTP_PORT),
+    //     auth: {
+    //       user: process.env.SMTP_USER,
+    //       pass: process.env.SMTP_PASSWORD,
+    //     },
+    //   },
+    //   sendVerificationRequest: sendVerificationRequest,
+    //   from: process.env.EMAIL_FROM,
+    // }),
   ],
 
   // only send magic links to existing users
@@ -35,8 +52,8 @@ export const AuthOptions = {
   //     return !userExists ? true : "/profile";
   //   },
   // }
-} satisfies NextAuthOptions;
+} satisfies NextAuthConfig;
 
-const MainAuth:  = NextAuth(AuthOptions);
+const MainAuth = NextAuth(AuthOptions);
 export default MainAuth;
 const { auth } = MainAuth;
