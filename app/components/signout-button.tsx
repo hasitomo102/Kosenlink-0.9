@@ -2,7 +2,6 @@
 
 import { Button } from "@tremor/react";
 import { signOut } from "next-auth/react";
-import { redirect } from "next/navigation";
 import { useState } from "react";
  
 export default function SignOutButton({ redirectURL }: { redirectURL?: string }) {
@@ -11,9 +10,9 @@ export default function SignOutButton({ redirectURL }: { redirectURL?: string })
     // define sign out function
     const handleSignOut = async () => {
         setLoading(true);
+        console.log("Signing out...")
         await signOut();
         setLoading(false);
-        if (redirectURL) redirect(redirectURL);
     }
  
     return (

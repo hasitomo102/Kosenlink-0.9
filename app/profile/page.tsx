@@ -1,4 +1,5 @@
 import { ActionButton } from "@/app/components/action-button";
+import SignOutButton from "@/app/components/signout-button";
 import { AuthOptions, auth } from "@/app/lib/auth";
 import { getUserWithEmail, updateUser } from "@/app/lib/users";
 import ProfileForm from "@/app/profile/form";
@@ -29,7 +30,7 @@ export default async function Profile() {
         // update the data with the server action
         if (user?.email) {
           console.log("Updating user");
-          await updateUser({ email: user.email,  })
+          await updateUser({ email: user?.email,  })
         }
       } catch (e: any) {
         console.warn("error with form action", e);
@@ -64,7 +65,7 @@ export default async function Profile() {
             </div>
             {/* <ActionButton title="Submit" action={handleSubmit} /> */}
             <Button type="submit">Submit</Button>
-            {/* <Button onClick={() => signOut()} variant="light">Sign Out</Button> */}
+            <SignOutButton redirectURL="/" />
       </form>
       </main>
     )
