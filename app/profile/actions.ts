@@ -34,7 +34,7 @@ export async function updateProfileData(formData: FormData) {
   
   // update the database
   console.log("updating hte user");
-  // updateUser({ ...parsedData, email: "kekoawong10@gmail.com"});
+  updateUser({ ...parsedData, email: session.user.email });
 
   // revalidate path
   // revalidatePath('/profile');

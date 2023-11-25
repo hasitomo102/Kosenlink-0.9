@@ -6,6 +6,7 @@ import { sendVerificationRequest } from '@/app/lib/email-config';
 
 // http guide: https://authjs.dev/guides/providers/email-http
 // smtp guide: https://next-auth.js.org/providers/email
+// How to access: https://authjs.dev/guides/upgrade-to-v5?authentication-method=server-component#authentication-methods
 export const AuthOptions = {
   adapter: FirestoreAdapter(firestore),
   secret: process.env.AUTH_SECRET,

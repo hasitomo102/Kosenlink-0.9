@@ -1,5 +1,7 @@
 'use client';
 
+import { ActionButton } from "@/app/components/action-button";
+import { updateUser } from "@/app/lib/users";
 import { updateProfileData } from "@/app/profile/actions";
 import { User } from "@/types/user";
 import { Button } from "@tremor/react";
@@ -30,13 +32,12 @@ export default function ProfileForm({ user }: { user?: Partial<User> }) {
     const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
 
     // Handle form submission
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
+    const handleSubmit = async () => {
         // Validate the form data
         try {
-            FormSchema.parse(formData);
+            const data = FormSchema.parse(formData);
             setFormErrors({});
+            await updateUser({ email: user?.email || "", ...data });
             // Form data is valid, you can submit it to the server or perform other actions
             console.log('Form data is valid:', formData);
             } catch (error) {
@@ -74,7 +75,7 @@ export default function ProfileForm({ user }: { user?: Partial<User> }) {
                             placeholder={user.lastName || "Last Name"}
                         />
                         </div>
-                        <Button type="submit">Save Changes</Button>
+                        <ActionButton title="Submit" action={handleSubmit} />
                         <Button onClick={() => signOut()} variant="light">Sign Out</Button>
                     </div> : <Button onClick={() => router.push("/")} variant="light">Return to Home Screen</Button>
         }
