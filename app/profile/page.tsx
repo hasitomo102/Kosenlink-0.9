@@ -24,7 +24,7 @@ export default async function Profile() {
      *
      * @param {FormData} data
      */
-    const submitFormAction = async () => {
+    const submitFormAction = async (formData: FormData) => {
       "use server";
       try {
         // update the data with the server action

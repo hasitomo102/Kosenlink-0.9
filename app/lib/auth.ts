@@ -1,7 +1,6 @@
 import NextAuth, { NextAuthConfig } from 'next-auth';
 import { FirestoreAdapter } from "@auth/firebase-adapter";
 import { firestore } from '@/app/lib/firebase';
-import { getUserWithEmail } from '@/app/lib/users';
 import { sendVerificationRequest } from '@/app/lib/email-config';
 
 // http guide: https://authjs.dev/guides/providers/email-http
