@@ -37,4 +37,6 @@ export const AuthOptions = {
   // }
 } satisfies NextAuthOptions;
 
-export default NextAuth(AuthOptions);
+const MainAuth:  = NextAuth(AuthOptions);
+export default MainAuth;
+const { auth } = MainAuth;

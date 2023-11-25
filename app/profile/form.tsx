@@ -5,6 +5,16 @@ import { User } from "@/types/user";
 import { Button } from "@tremor/react";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { ChangeEvent, FormEvent } from "react";
+import { z } from "zod";
+
+/**
+ * Define the form schema for zod form validation
+ */
+const FormSchema = z.object({
+    firstName: z.string(),
+    lastName: z.string(),
+});
 
 /**
  * Main profile page
@@ -15,9 +25,37 @@ import { useRouter } from "next/navigation";
 export default function ProfileForm({ user }: { user?: Partial<User> }) {
     // define router
     const router = useRouter();
+    // State to manage form data and errors
+    const [formData, setFormData] = useState({ firstName: '', lastName: '' });
+    const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
+
+    // Handle form input changes
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData({[name]: value });
+    };
+
+    // Handle form submission
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        // Validate the form data
+        try {
+            FormSchema.parse(formData);
+            setFormErrors({});
+            // Form data is valid, you can submit it to the server or perform other actions
+            console.log('Form data is valid:', formData);
+            } catch (error) {
+                // Validation failed, set the form errors
+                if (error instanceof Error) {
+                    setFormErrors({ [error.name[0]]: error.message });
+                }
+        }
+    };
 
     return (
-        <form action={updateProfileData}>
+        // <form action={updateProfileData}>
+        <div>
         { user?.id ?
                         <div>
                         <label className="block text-sm font-medium leading-6 text-gray-900">
@@ -46,6 +84,10 @@ export default function ProfileForm({ user }: { user?: Partial<User> }) {
                         <Button onClick={() => signOut()} variant="light">Sign Out</Button>
                     </div> : <Button onClick={() => router.push("/")} variant="light">Return to Home Screen</Button>
         }
-      </form>
+      </div>
     )
   }
+
+function useState(arg0: { firstName: string; lastName: string; }): [any, any] {
+    throw new Error("Function not implemented.");
+}

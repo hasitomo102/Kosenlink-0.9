@@ -13,7 +13,6 @@ const FormSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
 });
-
  
 /**
  * Server action for the profile screen form
