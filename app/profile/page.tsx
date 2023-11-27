@@ -24,10 +24,6 @@ export default async function Profile() {
     const session = await auth();
     // fetch the user with the email
     const user = await getUserWithEmail(session?.user?.email, true);
-    console.log("user:", user);
-    // const test = await updateUser({ ...user, email: user?.email || "test@gmail.com", firstName: "Kekoa" });
-
-
     
   	/**
      * Define the submitting form action
@@ -36,7 +32,6 @@ export default async function Profile() {
      */
     const submitFormAction = async (formData: FormData) => {
       "use server";
-      console.log("Parsing the data");
       const parsedData = FormSchema.parse({
         firstName: formData.get('firstName'),
         lastName: formData.get('lastName'),
@@ -45,7 +40,6 @@ export default async function Profile() {
       try {
         // update the data with the server action
         if (user?.email) {
-          console.log("Updating user");
           await updateUser({ email: user?.email, ...parsedData });
         }
       } catch (e: any) {
