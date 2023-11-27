@@ -46,6 +46,7 @@ export default async function Profile() {
         console.warn("error with form action", e);
         throw Error(e);
       }
+      // redirect to home page
       redirect("/");
     };
 
