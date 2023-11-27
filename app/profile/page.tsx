@@ -31,8 +31,8 @@ export default async function Profile() {
     const submitFormAction = async (formData: FormData) => {
       "use server";
       const parsedData = FormSchema.parse({
-        // firstName: formData.get('firstName'),
-        // lastName: formData.get('lastName'),
+        firstName: formData.get('firstName'),
+        lastName: formData.get('lastName'),
       });
       
       try {

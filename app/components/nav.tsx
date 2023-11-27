@@ -1,6 +1,6 @@
 import { auth } from '@/app/lib/auth';
 import { getUserWithEmail } from '@/app/lib/users';
-import Navbar from '@/app/navbar';
+import Navbar from '@/app/components/navbar';
 
 export default async function Nav() {
   const session = await auth();

@@ -75,7 +75,7 @@ export default function Navbar({ user }: { user?: Partial<User> }) {
                   <Link href="/profile" className="flex items-center px-4">
                     <div className="mr-3">
                       <div className="text-sm font-medium text-gray-500">
-                        {user.email}
+                        {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email}
                       </div>
                     </div>
                     <div className="flex-shrink-0">
@@ -148,7 +148,7 @@ export default function Navbar({ user }: { user?: Partial<User> }) {
                     </div>
                     <div className="ml-3">
                       <div className="text-sm font-medium text-gray-500">
-                        {user.email}
+                        {user.firstName && user.lastName ? `${user?.firstName} ${user?.lastName}` : user.email}
                       </div>
                     </div>
                   </Link>
