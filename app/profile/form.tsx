@@ -21,8 +21,8 @@ const FormSchema = z.object({
  * @export
  * @return {*} 
  */
-export default function ProfileForm({ user }: { user: Partial<User> & { email: string } }) {
-    const formAction = submitFormAction.bind(null, user.email);
+export default function ProfileForm({ user }: { user?: Partial<User> }) {
+    const formAction = submitFormAction.bind(null, user?.email);
     return (
         <form action={formAction}>
         <label className="block text-sm font-medium leading-6 text-gray-900 mt-2">

@@ -1,3 +1,5 @@
+"use server";
+
 import SignOutButton from "@/app/components/signout-button";
 import SubmitButton from "@/app/components/submit-form-button";
 import { auth } from "@/app/lib/auth";
@@ -18,8 +20,8 @@ const FormSchema = z.object({
  *
  * @param {FormData} data
  */
-export const submitFormAction = async (email: string, formData: FormData) => {
-    "use server";
+export const submitFormAction = async (email: string | undefined | null, formData: FormData) => {
+    // parse data
     const parsedData = FormSchema.parse({
         firstName: formData.get('firstName'),
         lastName: formData.get('lastName'),

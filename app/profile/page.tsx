@@ -3,6 +3,7 @@ import SubmitButton from "@/app/components/submit-form-button";
 import { auth } from "@/app/lib/auth";
 import { getUserWithEmail, updateUser } from "@/app/lib/users";
 import { TextInput } from "@tremor/react";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
 /**
@@ -45,11 +46,11 @@ export default async function Profile() {
         console.warn("error with form action", e);
         throw Error(e);
       }
+      redirect("/");
     };
 
     return (
       <main className="p-4 md:p-10 mx-auto max-w-7xl">
-        {/* <ProfileForm user={user} /> */}
         <form action={submitFormAction}>
             <label className="block text-sm font-medium leading-6 text-gray-900 mt-2">
             First Name
