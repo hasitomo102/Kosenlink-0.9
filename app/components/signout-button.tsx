@@ -10,7 +10,6 @@ export default function SignOutButton({ redirectURL }: { redirectURL?: string })
     // define sign out function
     const handleSignOut = async () => {
         setLoading(true);
-        console.log("Signing out...")
         await signOut();
         setLoading(false);
     }

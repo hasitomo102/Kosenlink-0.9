@@ -19,8 +19,8 @@ const FormSchema = z.object({
  * @return {*} 
  */
 export default async function Profile() {
+    // fetch the session and user
     const session = await auth();
-    // fetch the user with the email
     const user = await getUserWithEmail(session?.user?.email, true);
     
   	/**
@@ -31,8 +31,8 @@ export default async function Profile() {
     const submitFormAction = async (formData: FormData) => {
       "use server";
       const parsedData = FormSchema.parse({
-        firstName: formData.get('firstName'),
-        lastName: formData.get('lastName'),
+        // firstName: formData.get('firstName'),
+        // lastName: formData.get('lastName'),
       });
       
       try {
@@ -72,7 +72,6 @@ export default async function Profile() {
                 placeholder={user?.lastName || "Last Name"}
             />
             </div>
-            {/* <ActionButton title="Submit" action={handleSubmit} /> */}
             <SubmitButton loadingText="Updating...">Update User</SubmitButton>
             <SignOutButton redirectURL="/" />
       </form>
