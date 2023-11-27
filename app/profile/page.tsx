@@ -4,7 +4,15 @@ import { AuthOptions, auth } from "@/app/lib/auth";
 import { getUserWithEmail, updateUser } from "@/app/lib/users";
 import ProfileForm from "@/app/profile/form";
 import { Button } from "@tremor/react";
-import { signOut } from "next-auth/react";
+import { z } from "zod";
+
+/**
+ * Define the form schema for zod form validation
+ */
+const FormSchema = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
+});
 
 /**
  * Main profile page
@@ -18,6 +26,8 @@ export default async function Profile() {
     const user = await getUserWithEmail(session?.user?.email, true);
     console.log("user:", user);
     // const test = await updateUser({ ...user, email: user?.email || "test@gmail.com", firstName: "Kekoa" });
+
+
     
   	/**
      * Define the submitting form action
@@ -26,14 +36,21 @@ export default async function Profile() {
      */
     const submitFormAction = async (formData: FormData) => {
       "use server";
+      console.log("Parsing the data");
+      const parsedData = FormSchema.parse({
+        firstName: formData.get('firstName'),
+        lastName: formData.get('lastName'),
+      });
+      
       try {
         // update the data with the server action
         if (user?.email) {
           console.log("Updating user");
-          await updateUser({ email: user?.email,  })
+          await updateUser({ email: user?.email, ...parsedData });
         }
       } catch (e: any) {
         console.warn("error with form action", e);
+        throw Error(e);
       }
     };
 
