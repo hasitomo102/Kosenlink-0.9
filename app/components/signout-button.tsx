@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 export default function SignOutButton({ email }: { email?: string | null }) {
     const [isLoading, setLoading] = useState(false);
 
-    // define use effect to route away if signed out
+    // define use effect to protect route
     useEffect(() => {
         if (!email) redirect("/api/auth/signin");
         console.log("Signed In Email:", email);
