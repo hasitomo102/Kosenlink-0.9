@@ -76,7 +76,7 @@ export default async function Profile() {
                 defaultValue={user?.lastName}
             />
             <SubmitButton loadingText="Updating...">Update User</SubmitButton>
-            <SignOutButton redirectURL="/" />
+            <SignOutButton email={user?.email} />
       </form>
       </main>
     )
