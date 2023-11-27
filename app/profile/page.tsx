@@ -1,9 +1,7 @@
-import { ActionButton } from "@/app/components/action-button";
 import SignOutButton from "@/app/components/signout-button";
-import { AuthOptions, auth } from "@/app/lib/auth";
+import SubmitButton from "@/app/components/submit-form-button";
+import { auth } from "@/app/lib/auth";
 import { getUserWithEmail, updateUser } from "@/app/lib/users";
-import ProfileForm from "@/app/profile/form";
-import { Button } from "@tremor/react";
 import { z } from "zod";
 
 /**
@@ -75,7 +73,7 @@ export default async function Profile() {
             />
             </div>
             {/* <ActionButton title="Submit" action={handleSubmit} /> */}
-            <Button type="submit">Submit</Button>
+            <SubmitButton loadingText="Updating...">Update User</SubmitButton>
             <SignOutButton redirectURL="/" />
       </form>
       </main>

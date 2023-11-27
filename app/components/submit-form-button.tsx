@@ -5,16 +5,17 @@ import { useFormStatus } from 'react-dom';
  
 /**
  * Button will display loading state if nested in parent form
+ * https://nextjs.org/docs/app/building-your-application/data-fetching/forms-and-mutations#displaying-loading-state
  *
  * @export
  * @param {{ redirectURL?: string }} { redirectURL }
  * @return {*} 
  */
-export default function SignOutButton({ redirectURL, ...params }: { redirectURL?: string } & ButtonProps) {
+export default function SubmitButton({ redirectURL, ...params }: { redirectURL?: string } & ButtonProps) {
     // get parent form status
     const { pending } = useFormStatus();
  
     return (
-        <Button loading={pending} loadingText="Loading..." variant="light" {...params}>{params.children}</Button>
+        <Button aria-disabled={pending} type="submit" loading={pending} loadingText="Loading..." {...params}>{params.children}</Button>
     )
 }
