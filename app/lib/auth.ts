@@ -29,6 +29,9 @@ export const AuthOptions = {
       options: {},
     },
   ],
+  pages: {
+    signIn: '/sign-in'
+  },
 
   // only send magic links to existing users
   // https://next-auth.js.org/providers/email#sending-magic-links-to-existing-users
