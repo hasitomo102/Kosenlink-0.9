@@ -2,7 +2,7 @@
 
 import { Button, TextInput } from "@tremor/react";
 import { signIn } from "next-auth/react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 /**
@@ -18,16 +18,16 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
 
-  const handleSignIn = async () => {
-    setLoading(true);
-    await signIn('email', { email });
-    setLoading(false);
-  };
-
   // set callback URL
   // https://next-auth.js.org/getting-started/client#specifying-a-callbackurl
-  const callbackURL = useSearchParams().get("callbackUrl");
-  console.log("callback url:", callbackURL);
+  const callbackUrl = useSearchParams().get("callbackUrl") || "/";
+
+  // handle sign in function
+  const handleSignIn = async () => {
+    setLoading(true);
+    await signIn('email', { email, callbackUrl });
+    setLoading(false);
+  };
 
   return (
     <div className="flex-grow mx-auto w-full max-w-sm p-6">

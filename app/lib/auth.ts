@@ -30,7 +30,8 @@ export const AuthOptions = {
     },
   ],
   pages: {
-    signIn: '/sign-in'
+    signIn: '/sign-in',
+    verifyRequest: '/verify-request'
   },
 
   // only send magic links to existing users
