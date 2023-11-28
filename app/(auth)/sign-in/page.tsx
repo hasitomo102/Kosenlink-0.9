@@ -2,7 +2,7 @@
 
 import { Button, TextInput } from "@tremor/react";
 import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 /**
@@ -26,8 +26,8 @@ export default function SignIn() {
 
   // set callback URL
   // https://next-auth.js.org/getting-started/client#specifying-a-callbackurl
-  const callbackURL = useSearchParams();
-  console.log(callbackURL);
+  const callbackURL = useSearchParams().get("callbackUrl");
+  console.log("callback url:", callbackURL);
 
   return (
     <div className="flex-grow mx-auto w-full max-w-sm p-6">
