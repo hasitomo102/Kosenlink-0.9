@@ -1,4 +1,4 @@
-import { AuthOptions, auth } from "@/app/lib/auth";
+import { AuthOptions, auth } from "@/app/auth/config";
 import { fetchCollection, mutateCollection } from "@/app/lib/firebase";
 import { User } from "@/types/user";
 

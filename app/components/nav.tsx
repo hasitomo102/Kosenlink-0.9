@@ -1,4 +1,4 @@
-import { auth } from '@/app/lib/auth';
+import { auth } from '@/app/auth/config';
 import { getUserWithEmail } from '@/app/lib/users';
 import Navbar from '@/app/components/navbar';
 

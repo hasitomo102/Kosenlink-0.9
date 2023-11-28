@@ -1,6 +1,6 @@
 import SignOutButton from "@/app/components/signout-button";
 import SubmitButton from "@/app/components/submit-form-button";
-import { auth } from "@/app/lib/auth";
+import { auth } from "@/app/auth/config";
 import { getUserWithEmail, updateUser } from "@/app/lib/users";
 import { TextInput } from "@tremor/react";
 import { redirect } from "next/navigation";
@@ -75,8 +75,10 @@ export default async function Profile() {
                 placeholder={user?.lastName || "Last Name"}
                 defaultValue={user?.lastName}
             />
-            <SubmitButton loadingText="Updating...">Update User</SubmitButton>
-            <SignOutButton email={user?.email} />
+            <div className="mt-4 space-x-4">
+              <SubmitButton loadingText="Updating...">Update User</SubmitButton>
+              <SignOutButton type="button" variant="secondary" email={user?.email} />
+            </div>
       </form>
       </main>
     )

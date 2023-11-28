@@ -1,11 +1,11 @@
 'use client'
 
-import { Button } from "@tremor/react";
+import { Button, ButtonProps } from "@tremor/react";
 import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
  
-export default function SignOutButton({ email }: { email?: string | null }) {
+export default function SignOutButton({ email, ...params }: { email?: string | null } & ButtonProps) {
     const [isLoading, setLoading] = useState(false);
 
     // define use effect to protect route
@@ -21,6 +21,6 @@ export default function SignOutButton({ email }: { email?: string | null }) {
         setLoading(false);
     };
     return (
-        <Button onClick={handleSignOut} loading={isLoading} loadingText="Signing Out..." variant="light">Sign Out</Button>
+        <Button onClick={handleSignOut} loading={isLoading} loadingText="Signing Out..." variant="light" {...params}>Sign Out</Button>
     )
 }

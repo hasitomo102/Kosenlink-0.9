@@ -14,6 +14,9 @@
 <span>
 </div>
 
+## TODO
+* The middleware protection is not working, need to move that to an outside file
+
 ## Overview
 
 This is a starter template using the following stack:

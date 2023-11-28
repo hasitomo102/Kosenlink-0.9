@@ -1,7 +1,7 @@
 import NextAuth, { NextAuthConfig } from 'next-auth';
 import { FirestoreAdapter } from "@auth/firebase-adapter";
 import { firestore } from '@/app/lib/firebase';
-import { sendVerificationRequest } from '@/app/lib/email-config';
+import { sendVerificationRequest } from '@/app/auth/email-config';
 
 // http guide: https://authjs.dev/guides/providers/email-http
 // smtp guide: https://next-auth.js.org/providers/email
@@ -30,8 +30,8 @@ export const AuthOptions = {
     },
   ],
   pages: {
-    signIn: '/sign-in',
-    verifyRequest: '/verify-request'
+    signIn: '/auth/sign-in',
+    verifyRequest: '/auth/verify-request'
   },
 
   // only send magic links to existing users

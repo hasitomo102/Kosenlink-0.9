@@ -1,4 +1,4 @@
-import { auth as middleware } from "@/app/lib/auth";
+import { auth as middleware } from "@/app/auth/config";
 import { NextResponse } from "next/server";
 
 // Not working right now - have to place in main directory outside of app
