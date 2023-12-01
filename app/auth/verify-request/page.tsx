@@ -1,7 +1,7 @@
 'use client';
 
-import { Button, TextInput } from "@tremor/react";
-import Link from "next/link";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
+import { Subtitle, Title } from "@tremor/react";
 
 /**
  * Sign in page using the next auth framework
@@ -14,11 +14,13 @@ import Link from "next/link";
 export default function VerifyRequest() {
 
   return (
-    <div className="flex-grow mx-auto w-full max-w-sm p-6">
-      <div className="mx-auto w-full max-w-sm p-6">
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            A sign in link has been sent to your email address.
-        </h2>
+    <div className="flex-grow mx-auto w-full max-w-lg p-6">
+      <div className="mx-auto w-full max-w-lg p-6">
+        <CheckCircleIcon className="mt-10 h-10 text-green-600 text-center w-full" />
+        <Title className="mt-4 text-center text-4xl font-bold leading-9 tracking-tight text-gray-900">
+            The magic link has been sent!
+        </Title>
+        <Subtitle className="mt-4">Open your email and click on the magic link to sign in.</Subtitle>
       </div>
     </div>
   );
