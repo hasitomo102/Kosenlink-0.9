@@ -1,11 +1,10 @@
 'use client';
 
-import { getUserWithEmail } from "@/app/lib/users";
 import { SparklesIcon } from "@heroicons/react/24/solid";
 import { Button, Text, TextInput } from "@tremor/react";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { startTransition, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { z } from "zod";
 import { fromZodError } from 'zod-validation-error';
 
@@ -25,9 +24,6 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-
-  // get router
-  const { replace } = useRouter();
 
   // function that will create the callback url to the profile screen with the query parameters
   const createCallbackUrl = (callbackUrl: string) => {
@@ -51,13 +47,17 @@ export default function SignIn() {
     // parse the data
     try {
       const parsedEmail = LoginEmail.parse(email);
+
       // check if user is in database
-      // const user = await getUserWithEmail(parsedEmail, true);
+      const emailParams = new URLSearchParams();
+      emailParams.set('email', parsedEmail);
+      const userResponse = await fetch(`/api/get-user?${emailParams.toString()}`);
+      console.log(userResponse);
 
       // if it is a new user, set the referring url in the parameters for the profile screen
       if (true) {
         const newCallbackUrl = createCallbackUrl(callbackUrl);
-        await signIn('email', { email: parsedEmail, callbackUrl: newCallbackUrl });
+        // await signIn('email', { email: parsedEmail, callbackUrl: newCallbackUrl });
       } else {
         // return the normal callback url if user already has an account
         await signIn('email', { email: parsedEmail, callbackUrl });
