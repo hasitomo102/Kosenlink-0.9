@@ -59,11 +59,11 @@ export default function InviteUsers() {
       // if it is a new user, set the referring url in the parameters for the profile screen
       if (!userData) {
         const newCallbackUrl = createProfileCallbackUrl(callbackUrl);
-        // await signIn('email', { email: parsedEmail, callbackUrl: newCallbackUrl, redirect: false });
+        await signIn('email', { email: parsedEmail, callbackUrl: newCallbackUrl, redirect: false });
         setSuccess(true);
       } else {
         // return the normal callback url if user already has an account
-        // await signIn('email', { email: parsedEmail, callbackUrl, redirect: false });
+        await signIn('email', { email: parsedEmail, callbackUrl, redirect: false, invite: true });
         setSuccess(true);
       }
     } catch (e: any) {
@@ -76,7 +76,7 @@ export default function InviteUsers() {
   return (
     <div className="mt-10">
         <Title className="mb-1 ml-1">Invite New Users</Title>
-        <TextInput type="email" disabled={success || loading} onSelect={() => setError("")} onValueChange={(val) => setEmail(val)} placeholder="Enter Email" />
+        <TextInput type="email" onSelect={() => setError("")} onValueChange={(val) => setEmail(val)} placeholder="Enter Email" />
         <Button onClick={handleInvite} icon={PaperAirplaneIcon} aria-disabled={loading} loading={loading} className="mt-4 w-full">
           Invite User
         </Button>
