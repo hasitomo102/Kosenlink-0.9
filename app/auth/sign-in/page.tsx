@@ -1,6 +1,7 @@
 'use client';
 
 import { getUserWithEmail } from "@/app/lib/users";
+import { SparklesIcon } from "@heroicons/react/24/solid";
 import { Button, Text, TextInput } from "@tremor/react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -46,7 +47,6 @@ export default function SignIn() {
   // handle sign in function
   const handleSignIn = async () => {
     setLoading(true);
-    
     // parse the data
     try {
       const parsedEmail = LoginEmail.parse(email);
@@ -54,7 +54,7 @@ export default function SignIn() {
       // const user = await getUserWithEmail(parsedEmail, true);
 
       // if it is a new user, set the referring url in the parameters for the profile screen
-      if (true) {
+      if (false) {
         const newReferrelUrl = createURL(callbackUrl);
         console.log(newReferrelUrl);
       } else {
@@ -75,7 +75,7 @@ export default function SignIn() {
           Enter your email to sign in
         </h2>
         <TextInput onSelect={() => setError("")} onValueChange={(val) => setEmail(val)} className="mt-4" placeholder="Enter your email" />
-        <Button aria-disabled={loading} loading={loading} onClick={handleSignIn} className="mt-4 w-full">Sign in with Email</Button>
+        <Button icon={SparklesIcon} aria-disabled={loading} loading={loading} onClick={handleSignIn} className="mt-4 w-full">Send magic sign-in link</Button>
         <Text className="mt-2 text-center" color="red">{error}</Text>
       </div>
     </div>
