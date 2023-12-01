@@ -29,15 +29,16 @@ export default function SignIn() {
   // get router
   const { replace } = useRouter();
 
-  const createURL = (referrrelURL: string) => {
-    const params = new URLSearchParams("/profile");
-    if (referrrelURL) {
-      params.set('referrelUrl', referrrelURL);
+  // function that will create the callback url to the profile screen with the query parameters
+  const createCallbackUrl = (callbackUrl: string) => {
+    const params = new URLSearchParams();
+    if (callbackUrl) {
+      params.set('callbackUrl', callbackUrl);
     } else {
-      params.delete('referrelUrl');
+      params.delete('callbackUrl');
     };
 
-    return `${window.location}?${params.toString()}`;
+    return `${window.location.origin}/profile?${params.toString()}`
   };
 
   // set callback URL
@@ -54,9 +55,9 @@ export default function SignIn() {
       // const user = await getUserWithEmail(parsedEmail, true);
 
       // if it is a new user, set the referring url in the parameters for the profile screen
-      if (false) {
-        const newReferrelUrl = createURL(callbackUrl);
-        console.log(newReferrelUrl);
+      if (true) {
+        const newCallbackUrl = createCallbackUrl(callbackUrl);
+        await signIn('email', { email: parsedEmail, callbackUrl: newCallbackUrl });
       } else {
         // return the normal callback url if user already has an account
         await signIn('email', { email: parsedEmail, callbackUrl });
