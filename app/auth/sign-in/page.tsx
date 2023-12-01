@@ -70,8 +70,8 @@ export default function SignIn() {
   };
 
   return (
-    <div className="flex-grow mx-auto w-full max-w-sm p-6">
-      <div className="mx-auto w-full max-w-sm p-6">
+    <div className="flex-grow mx-auto w-full max-w-lg p-6">
+      <div className="mx-auto w-full max-w-lg p-6">
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Enter your email to sign in
         </h2>

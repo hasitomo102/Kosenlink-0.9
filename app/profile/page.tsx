@@ -2,7 +2,7 @@ import SignOutButton from "@/app/components/signout-button";
 import SubmitButton from "@/app/components/submit-form-button";
 import { auth } from "@/app/auth/config";
 import { getUserWithEmail, updateUser } from "@/app/lib/users";
-import { TextInput } from "@tremor/react";
+import { Subtitle, Text, TextInput, Title } from "@tremor/react";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
@@ -51,12 +51,14 @@ export default async function Profile() {
     };
 
     return (
-      <main className="p-4 md:p-10 mx-auto max-w-7xl">
-        <form action={submitFormAction}>
-            <label className="block text-sm font-medium leading-6 text-gray-900 mt-2">
-            First Name
-            </label>
-            <TextInput
+      <div className="flex-grow mx-auto w-full max-w-lg p-6">
+          <div className="mx-auto w-full max-w-lg p-6">
+          <h2 className="mt-8 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+            Enter your first and last name
+          </h2>
+         <form action={submitFormAction}>
+            <Text className="mt-4 ml-1">First Name</Text>
+             <TextInput
                 name="firstName"
                 id="firstName"
                 required
@@ -64,9 +66,7 @@ export default async function Profile() {
                 placeholder={user?.firstName || "First Name"}
                 defaultValue={user?.firstName}
             />
-            <label className="block text-sm font-medium leading-6 text-gray-900 mt-2">
-            Last Name
-            </label>
+            <Text className="mt-2 ml-1">Last Name</Text>
             <TextInput
                 name="lastName"
                 id="lastName"
@@ -75,11 +75,10 @@ export default async function Profile() {
                 placeholder={user?.lastName || "Last Name"}
                 defaultValue={user?.lastName}
             />
-            <div className="mt-4 space-x-4">
-              <SubmitButton loadingText="Updating...">Update User</SubmitButton>
-              <SignOutButton type="button" variant="secondary" email={user?.email} />
-            </div>
+            <SubmitButton className="w-full mt-6" loadingText="Updating...">Update User</SubmitButton>
+            <SignOutButton className="w-full mt-4" type="button" variant="secondary" email={user?.email} /> 
       </form>
-      </main>
+      </div>
+    </div>
     )
   }
