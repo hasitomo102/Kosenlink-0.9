@@ -1,5 +1,6 @@
 'use client';
 
+import { User } from "@/types/user";
 import { SparklesIcon } from "@heroicons/react/24/solid";
 import { Button, Text, TextInput } from "@tremor/react";
 import { signIn } from "next-auth/react";
@@ -26,7 +27,7 @@ export default function SignIn() {
   const [error, setError] = useState("");
 
   // function that will create the callback url to the profile screen with the query parameters
-  const createCallbackUrl = (callbackUrl: string) => {
+  const createProfileCallbackUrl = (callbackUrl: string) => {
     const params = new URLSearchParams();
     if (callbackUrl) {
       params.set('callbackUrl', callbackUrl);
@@ -52,12 +53,12 @@ export default function SignIn() {
       const emailParams = new URLSearchParams();
       emailParams.set('email', parsedEmail);
       const userResponse = await fetch(`/api/get-user?${emailParams.toString()}`);
-      console.log(userResponse);
+      const userData: Partial<User | null> = await userResponse.json();
 
       // if it is a new user, set the referring url in the parameters for the profile screen
-      if (true) {
-        const newCallbackUrl = createCallbackUrl(callbackUrl);
-        // await signIn('email', { email: parsedEmail, callbackUrl: newCallbackUrl });
+      if (!userData) {
+        const newCallbackUrl = createProfileCallbackUrl(callbackUrl);
+        await signIn('email', { email: parsedEmail, callbackUrl: newCallbackUrl });
       } else {
         // return the normal callback url if user already has an account
         await signIn('email', { email: parsedEmail, callbackUrl });

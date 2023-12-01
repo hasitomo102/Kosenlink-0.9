@@ -10,7 +10,6 @@ export default middleware((request) => {
     if (request.nextUrl.pathname.startsWith("/profile") && !request.auth?.user?.email) {
         return NextResponse.rewrite(new URL("/api/auth/signin", request.url));
     }
-    console.log("Hititi");
 });
 
 // match on certain paths
