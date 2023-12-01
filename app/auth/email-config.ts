@@ -15,8 +15,8 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
   const transport = createTransport(provider.server);
   const result = await transport.sendMail({
     to: identifier,
-    from: provider.from,
-    subject: `Sign in to ${host}`,
+    from: `Athlegion Pickleball Competitions <${provider.from}>`,
+    subject: `Sign in to your Athlegion account`,
     text: text({ url, host }),
     html: html({ url, host, theme }),
   });
@@ -35,9 +35,7 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
  * @note We don't add the email address to avoid needing to escape it, if you do, remember to sanitize it!
  */
 function html(params: { url: string, host: string, theme: any }) {
-  const { url, host, theme } = params
-
-  const escapedHost = host.replace(/\./g, "&#8203;.")
+  const { url, host, theme } = params;
 
   const brandColor = theme.brandColor || "#346df1"
   const color = {
@@ -47,7 +45,7 @@ function html(params: { url: string, host: string, theme: any }) {
     buttonBackground: brandColor,
     buttonBorder: brandColor,
     buttonText: theme.buttonText || "#fff",
-  }
+  };
 
   return `
 <body style="background: ${color.background};">
@@ -56,7 +54,7 @@ function html(params: { url: string, host: string, theme: any }) {
     <tr>
       <td align="center"
         style="padding: 10px 0px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: ${color.text};">
-        Sign in to <strong>${escapedHost}</strong>
+        Sign in to <strong>Athlegion</strong>
       </td>
     </tr>
     <tr>
@@ -84,5 +82,5 @@ function html(params: { url: string, host: string, theme: any }) {
 
 /** Email Text body (fallback for email clients that don't render HTML, e.g. feature phones) */
 function text({ url, host }: { url: string, host: string }) {
-  return `Sign in to ${host}\n${url}\n\n`;
+  return `\nSign in to Athlegion.\n\n`;
 };
