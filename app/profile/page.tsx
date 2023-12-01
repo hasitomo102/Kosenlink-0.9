@@ -20,7 +20,7 @@ const FormSchema = z.object({
  * @export
  * @return {*} 
  */
-export default async function Profile() {
+export default async function Profile({ searchParams }: { searchParams: { callbackUrl: string }}) {
     // fetch the session and user
     const session = await auth();
     const user = await getUserWithEmail(session?.user?.email, true);
@@ -47,7 +47,7 @@ export default async function Profile() {
         throw Error(e);
       }
       // redirect to home page
-      redirect("/");
+      redirect(searchParams.callbackUrl || "/");
     };
 
     return (
@@ -75,8 +75,11 @@ export default async function Profile() {
                 placeholder={user?.lastName || "Last Name"}
                 defaultValue={user?.lastName}
             />
-            <SubmitButton className="w-full mt-6" loadingText="Updating...">Update User</SubmitButton>
-            <SignOutButton className="w-full mt-4" type="button" variant="secondary" email={user?.email} /> 
+            <SubmitButton className="w-full mt-6" loadingText={searchParams.callbackUrl ? "Continuing..." : "Updating..."}>
+              {searchParams.callbackUrl ? "Continue" : "Update User"}
+            </SubmitButton>
+            {!searchParams.callbackUrl ? <SignOutButton className="w-full mt-4" type="button" variant="secondary" email={user?.email} /> : null}
+            
       </form>
       </div>
     </div>
