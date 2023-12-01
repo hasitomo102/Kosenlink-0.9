@@ -1,7 +1,6 @@
-'use client';
-
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { Subtitle, Title } from "@tremor/react";
+import { headers } from "next/headers";
 
 /**
  * Sign in page using the next auth framework
@@ -12,6 +11,8 @@ import { Subtitle, Title } from "@tremor/react";
  * @return {*} 
  */
 export default function VerifyRequest() {
+  const headersList = headers();
+  console.log("verification headers", headersList);
 
   return (
     <div className="flex-grow mx-auto w-full max-w-lg p-6">

@@ -1,10 +1,10 @@
 'use client';
 
 import { User } from "@/types/user";
-import { SparklesIcon } from "@heroicons/react/24/solid";
-import { Button, Text, TextInput } from "@tremor/react";
+import { CheckCircleIcon, SparklesIcon } from "@heroicons/react/24/solid";
+import { Button, Subtitle, Text, TextInput, Title } from "@tremor/react";
 import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
 import { fromZodError } from 'zod-validation-error';
@@ -25,6 +25,7 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
   // function that will create the callback url to the profile screen with the query parameters
   const createProfileCallbackUrl = (callbackUrl: string) => {
@@ -58,15 +59,17 @@ export default function SignIn() {
       // if it is a new user, set the referring url in the parameters for the profile screen
       if (!userData) {
         const newCallbackUrl = createProfileCallbackUrl(callbackUrl);
-        await signIn('email', { email: parsedEmail, callbackUrl: newCallbackUrl });
+        await signIn('email', { email: parsedEmail, callbackUrl: newCallbackUrl, redirect: false });
+        setSuccess(true);
       } else {
         // return the normal callback url if user already has an account
-        await signIn('email', { email: parsedEmail, callbackUrl });
+        await signIn('email', { email: parsedEmail, callbackUrl, redirect: false });
+        setSuccess(true);
       }
     } catch (e: any) {
       const error = fromZodError(e);
       setError(error.message);
-    }
+    };
     setLoading(false);
   };
 
@@ -76,9 +79,12 @@ export default function SignIn() {
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Enter your email to sign in
         </h2>
-        <TextInput onSelect={() => setError("")} onValueChange={(val) => setEmail(val)} className="mt-4" placeholder="Enter your email" />
-        <Button icon={SparklesIcon} aria-disabled={loading} loading={loading} onClick={handleSignIn} className="mt-4 w-full">Send magic sign-in link</Button>
+        <TextInput type="email" disabled={success || loading} onSelect={() => setError("")} onValueChange={(val) => setEmail(val)} className="mt-4" placeholder="Enter your email" />
+        <Button icon={!success ? SparklesIcon : CheckCircleIcon} disabled={success || success} aria-disabled={loading || success} loading={loading} onClick={handleSignIn} className="mt-4 w-full">
+          {!success ? "Send magic sign-in link" : "Magic sign-in link sent!"}
+        </Button>
         <Text className="mt-2 text-center" color="red">{error}</Text>
+        {success ? <Text className="mt-4 w-full text-center">Open your email and click on the magic link to sign in.</Text> : null}
       </div>
     </div>
   );

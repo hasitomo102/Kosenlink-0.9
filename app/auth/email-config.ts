@@ -15,8 +15,8 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
   const transport = createTransport(provider.server);
   const result = await transport.sendMail({
     to: identifier,
-    from: `Athlegion Pickleball Competitions <${provider.from}>`,
-    subject: `Sign in to your Athlegion account`,
+    from: `Neo Open Source <${provider.from}>`,
+    subject: `Sign in to your Neo account`,
     text: text({ url, host }),
     html: html({ url, host, theme }),
   });
