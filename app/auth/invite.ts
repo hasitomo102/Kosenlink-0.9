@@ -23,7 +23,16 @@ export /**
  * @param {string} windowLocationOrigin
  * @param {string} [callbackUrl]
  */
-const inviteUser = async (email: string, inviteOptions?: Omit<Omit<ExtraEmailOptions, "email">, "invite">) => {
+const inviteUser = async (email: string, inviteOptions?: Omit<Omit<Omit<ExtraEmailOptions, "email">, "invite">, "emailType">) => {
+  // set the default options
+  const signInOptions: Omit<Omit<ExtraEmailOptions, "email">, "invite"> = {
+    buttonText: "Accept Invite",
+    emailSubject: "You have been invited to join Neo",
+    emailMessage: "To accept your invite to Neo, click the button below.",
+    emailType: 'invite',
+    ...inviteOptions,
+  }
+
   try {
     // get the user data avaialable
     const emailParams = new URLSearchParams();
@@ -35,10 +44,10 @@ const inviteUser = async (email: string, inviteOptions?: Omit<Omit<ExtraEmailOpt
     if (!userData) {
       const newCallbackUrl = createProfileCallbackUrl(window.location.origin, inviteOptions?.callbackUrl);
       delete inviteOptions?.callbackUrl;
-      await signIn('email', { email, callbackUrl: newCallbackUrl, redirect: false, invite: true, ...inviteOptions });
+      await signIn('email', { email, callbackUrl: newCallbackUrl, redirect: false, invite: true, ...signInOptions });
     } else {
       // return the normal callback url if user already has an account
-      await signIn('email', { email, callbackUrl: inviteOptions?.callbackUrl, redirect: false, invite: true, ...inviteOptions });
+      await signIn('email', { email, callbackUrl: inviteOptions?.callbackUrl, redirect: false, invite: true, ...signInOptions });
     }
   } catch (e: any) {
     throw Error("Error with inviting user", e);

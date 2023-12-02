@@ -9,12 +9,9 @@ import { ExtraEmailOptions } from "@/types/auth";
  * @param {SendVerificationRequestParams} { identifier, url, provider, theme }
  */
 export async function sendVerificationRequest(params: SendVerificationRequestParams) {
-  const { identifier, url, provider, theme } = params;
-
-
-  const extraOptions: ExtraEmailOptions = await params.request.json();
-  // console.log("verification params body", params.request.body);
-  // console.log("verification params headers", params.request.headers);
+  // get the parameters and the extra options from the sign in request
+  const { identifier, url, provider, theme, request } = params;
+  const extraOptions: ExtraEmailOptions = await request.json();
 
   const { host } = new URL(url);
   // NOTE: You are not required to use `nodemailer`, use whatever you want.
@@ -23,8 +20,8 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
     to: identifier,
     from: `${extraOptions.senderName || "Neo Open Source"} <${provider.from}>`,
     subject: extraOptions.emailSubject || `Sign in to your Neo account`,
-    text: text({ url, host }),
-    html: html({ url, host, theme }),
+    text: text(extraOptions.emailMessage),
+    html: html({ url, emailMessage: extraOptions.emailMessage, buttonText: extraOptions.buttonText, theme }),
   });
   const failed = result.rejected.concat(result.pending).filter(Boolean);
   if (failed.length) {
@@ -40,8 +37,8 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
  *
  * @note We don't add the email address to avoid needing to escape it, if you do, remember to sanitize it!
  */
-function html(params: { url: string, host: string, theme: any }) {
-  const { url, host, theme } = params;
+function html(params: { url: string, emailMessage?: string, buttonText?: string, theme: any }) {
+  const { url, emailMessage, buttonText, theme } = params;
 
   const brandColor = theme.brandColor || "#346df1"
   const color = {
@@ -54,39 +51,40 @@ function html(params: { url: string, host: string, theme: any }) {
   };
 
   return `
-<body style="background: ${color.background};">
-  <table width="100%" border="0" cellspacing="20" cellpadding="0"
-    style="background: ${color.mainBackground}; max-width: 600px; margin: auto; border-radius: 10px;">
-    <tr>
-      <td align="center"
-        style="padding: 10px 0px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: ${color.text};">
-        Sign in to <strong>Athlegion</strong>
-      </td>
-    </tr>
-    <tr>
-      <td align="center" style="padding: 20px 0;">
-        <table border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td align="center" style="border-radius: 5px;" bgcolor="${color.buttonBackground}"><a href="${url}"
-                target="_blank"
-                style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: ${color.buttonText}; text-decoration: none; border-radius: 5px; padding: 10px 20px; border: 1px solid ${color.buttonBorder}; display: inline-block; font-weight: bold;">Sign
-                in</a></td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td align="center"
-        style="padding: 0px 0px 10px 0px; font-size: 16px; line-height: 22px; font-family: Helvetica, Arial, sans-serif; color: ${color.text};">
-        If you did not request this email you can safely ignore it.
-      </td>
-    </tr>
-  </table>
-</body>
-`;
+  <body style="background: ${color.background};">
+    <table width="100%" border="0" cellspacing="20" cellpadding="0"
+      style="background: ${color.mainBackground}; max-width: 600px; margin: auto; border-radius: 10px;">
+      <tr>
+        <td align="center"
+          style="padding: 10px 0px; font-size: 22px; font-family: Helvetica, Arial, sans-serif; color: ${color.text};">
+          ${emailMessage || "Sign into your Neo Account."}
+        </td>
+      </tr>
+      <tr>
+        <td align="center" style="padding: 20px 0;">
+          <table border="0" cellspacing="0" cellpadding="0">
+            <tr>
+              <td align="center" style="border-radius: 5px;" bgcolor="${color.buttonBackground}"><a href="${url}"
+                  target="_blank"
+                  style="font-size: 18px; font-family: Helvetica, Arial, sans-serif; color: ${color.buttonText}; text-decoration: none; border-radius: 5px; padding: 10px 20px; border: 1px solid ${color.buttonBorder}; display: inline-block; font-weight: bold;">
+                  ${buttonText || "Sign In"}
+              </a></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td align="center"
+          style="padding: 0px 0px 10px 0px; font-size: 16px; line-height: 22px; font-family: Helvetica, Arial, sans-serif; color: ${color.text};">
+          If you did not request this email you can safely ignore it.
+        </td>
+      </tr>
+    </table>
+  </body>
+  `;
 }
 
 /** Email Text body (fallback for email clients that don't render HTML, e.g. feature phones) */
-function text({ url, host }: { url: string, host: string }) {
-  return `\nSign in to Athlegion.\n\n`;
+function text(message?: string) {
+  return `\n${message || "Sign in."}\n\n`;
 };

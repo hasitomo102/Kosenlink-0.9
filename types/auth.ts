@@ -9,6 +9,8 @@ export interface ExtraEmailOptions {
     email?: string;
     callbackUrl?: string;
     emailType?: 'invite';
+    emailMessage?: string;
+    buttonText?: string;
     senderName?: string;
     emailSubject?: string;
 };

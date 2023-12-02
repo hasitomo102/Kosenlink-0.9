@@ -36,7 +36,13 @@ export default function InviteUsers({ user, ...divParams }: { user?: Partial<Use
     // parse the data
     try {
       const parsedEmail = InvitedEmail.parse(email);
-      await inviteUser(parsedEmail, { callbackUrl, emailSubject: `${user?.firstName} ${user?.lastName} has invited you to join Neo` });
+      await inviteUser(parsedEmail, { 
+        callbackUrl, 
+        emailSubject: `${user?.firstName} ${user?.lastName} has invited you to join Neo`,
+        emailMessage: `To accept ${user?.firstName}'s invite, click on the link below.`,
+        buttonText: `Accept ${user?.firstName}'s invite`,
+        senderName: `${user?.firstName} at Neo Tech`
+      });
       setSuccess(true);
     } catch (e: any) {
       console.warn("Error with invite", e);
