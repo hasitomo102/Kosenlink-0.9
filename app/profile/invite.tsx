@@ -4,7 +4,7 @@ import { inviteUser } from "@/app/auth/invite";
 import UsersTable from "@/app/table";
 import { User } from "@/types/user";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
-import { Button, Text, TextInput, Title } from "@tremor/react";
+import { Button, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow, Text, TextInput, Title } from "@tremor/react";
 import { useSearchParams } from "next/navigation";
 import { DetailedHTMLProps, HTMLAttributes, useState } from "react";
 import { ZodError, z } from "zod";
@@ -69,7 +69,24 @@ export default function InviteUsers({ user, invitedUsers, ...divParams }: { user
           Invite User
         </Button>
         <Text className="mt-2 text-center" color="red">{error}</Text>
-        <UsersTable users={allInvitedUsers} />
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableHeaderCell>Email</TableHeaderCell>
+              <TableHeaderCell>Status</TableHeaderCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {allInvitedUsers.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell>{user.name}</TableCell>
+                <TableCell>
+                  <Text>{user.email}</Text>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
     </div>
   );
 }
