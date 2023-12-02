@@ -1,6 +1,6 @@
 import { createTransport } from "nodemailer";
 import { SendVerificationRequestParams } from "next-auth/providers";
-import { InviteOptions } from "@/types/auth";
+import { ExtraEmailOptions } from "@/types/auth";
 
 /**
  * Function to send verification request
@@ -12,8 +12,7 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
   const { identifier, url, provider, theme } = params;
 
 
-  const requestbody: InviteOptions = await params.request.json();
-  console.log("request object", requestbody);
+  const extraOptions: ExtraEmailOptions = await params.request.json();
   // console.log("verification params body", params.request.body);
   // console.log("verification params headers", params.request.headers);
 
@@ -22,8 +21,8 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
   const transport = createTransport(provider.server);
   const result = await transport.sendMail({
     to: identifier,
-    from: `Neo Open Source <${provider.from}>`,
-    subject: `Sign in to your Neo account`,
+    from: `${extraOptions.senderName || "Neo Open Source"} <${provider.from}>`,
+    subject: extraOptions.emailSubject || `Sign in to your Neo account`,
     text: text({ url, host }),
     html: html({ url, host, theme }),
   });

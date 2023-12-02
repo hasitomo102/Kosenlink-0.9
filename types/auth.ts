@@ -5,10 +5,10 @@
  * @export
  * @interface InviteOptions
  */
-export interface InviteOptions {
+export interface ExtraEmailOptions {
     email?: string;
     callbackUrl?: string;
-    invite?: 'true' | 'false';
-    inviterName?: string;
-    eventName?: string;
+    emailType?: 'invite';
+    senderName?: string;
+    emailSubject?: string;
 };

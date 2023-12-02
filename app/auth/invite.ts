@@ -2,7 +2,7 @@
 
 import { User } from "@/types/user";
 import { signIn } from "next-auth/react";
-import { InviteOptions } from "@/types/auth";
+import { ExtraEmailOptions } from "@/types/auth";
 
 // function that will create the callback url to the profile screen with the query parameters
 const createProfileCallbackUrl = (windowLocationOrigin: string, callbackUrl?: string) => {
@@ -23,7 +23,7 @@ export /**
  * @param {string} windowLocationOrigin
  * @param {string} [callbackUrl]
  */
-const inviteUser = async (email: string, inviteOptions?: Omit<InviteOptions, "email">) => {
+const inviteUser = async (email: string, inviteOptions?: Omit<Omit<ExtraEmailOptions, "email">, "invite">) => {
   try {
     // get the user data avaialable
     const emailParams = new URLSearchParams();
@@ -35,10 +35,10 @@ const inviteUser = async (email: string, inviteOptions?: Omit<InviteOptions, "em
     if (!userData) {
       const newCallbackUrl = createProfileCallbackUrl(window.location.origin, inviteOptions?.callbackUrl);
       delete inviteOptions?.callbackUrl;
-      await signIn('email', { email, callbackUrl: newCallbackUrl, redirect: false, ...inviteOptions });
+      await signIn('email', { email, callbackUrl: newCallbackUrl, redirect: false, invite: true, ...inviteOptions });
     } else {
       // return the normal callback url if user already has an account
-      await signIn('email', { email, callbackUrl: inviteOptions?.callbackUrl, redirect: false, ...inviteOptions });
+      await signIn('email', { email, callbackUrl: inviteOptions?.callbackUrl, redirect: false, invite: true, ...inviteOptions });
     }
   } catch (e: any) {
     throw Error("Error with inviting user", e);
