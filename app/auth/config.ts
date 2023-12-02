@@ -3,6 +3,21 @@ import { FirestoreAdapter } from "@auth/firebase-adapter";
 import { firestore } from '@/app/lib/firebase';
 import { sendVerificationRequest } from '@/app/auth/email-config';
 
+// set the initial base
+const initialBaseURL =
+	process.env.NEXT_PUBLIC_SITE_URL ??
+	process.env.NEXT_PUBLIC_VERCEL_URL ??
+	"http://localhost:3000/";
+/**
+ * The base url for the server side code
+ * https://github.com/vercel/next.js/discussions/16429
+ * https://vercel.com/docs/concepts/projects/environment-variables/system-environment-variables
+ * Defaults to vercel url, will fallback to env variable for local host
+ */
+export const BaseURL = initialBaseURL.startsWith("http")
+	? initialBaseURL
+	: `https://${initialBaseURL}`;
+
 // http guide: https://authjs.dev/guides/providers/email-http
 // smtp guide: https://next-auth.js.org/providers/email
 // How to access: https://authjs.dev/guides/upgrade-to-v5?authentication-method=server-component#authentication-methods

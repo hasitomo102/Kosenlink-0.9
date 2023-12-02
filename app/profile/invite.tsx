@@ -59,7 +59,7 @@ export default function InviteUsers() {
       // if it is a new user, set the referring url in the parameters for the profile screen
       if (!userData) {
         const newCallbackUrl = createProfileCallbackUrl(callbackUrl);
-        await signIn('email', { email: parsedEmail, callbackUrl: newCallbackUrl, redirect: false });
+        await signIn('email', { email: parsedEmail, callbackUrl: newCallbackUrl, redirect: false, invite: true });
         setSuccess(true);
       } else {
         // return the normal callback url if user already has an account
@@ -67,8 +67,8 @@ export default function InviteUsers() {
         setSuccess(true);
       }
     } catch (e: any) {
-      const error = fromZodError(e);
-      setError(error.message);
+      console.warn("Error with invite", e);
+      setError(e?.message);
     };
     setLoading(false);
   };

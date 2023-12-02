@@ -1,5 +1,19 @@
 import { createTransport } from "nodemailer";
 import { SendVerificationRequestParams } from "next-auth/providers";
+import { SignInOptions } from "next-auth/react";
+
+/**
+ * Define the parameters set in the sign in function
+ *
+ * @interface VerificationRequestBody
+ */
+interface VerificationRequestBody extends Omit<SignInOptions, 'redirect'> {
+  email?: string;
+  callbackUrl?: string;
+  redirect?: 'true' | 'false';
+  invite?: 'true' | 'false';
+  csrfToken?: string;
+}
 
 /**
  * Function to send verification request
@@ -10,8 +24,12 @@ import { SendVerificationRequestParams } from "next-auth/providers";
 export async function sendVerificationRequest(params: SendVerificationRequestParams) {
   const { identifier, url, provider, theme } = params;
 
-  console.log("verification params body", params.request.body);
-  console.log("verification params headers", params.request.headers);
+
+  const requestbody: VerificationRequestBody = await params.request.json();
+  console.log("request object", requestbody);
+  console.log("type of redirecr", typeof requestbody.redirect);
+  // console.log("verification params body", params.request.body);
+  // console.log("verification params headers", params.request.headers);
 
   const { host } = new URL(url);
   // NOTE: You are not required to use `nodemailer`, use whatever you want.

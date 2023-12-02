@@ -67,8 +67,9 @@ export default function SignIn() {
         setSuccess(true);
       }
     } catch (e: any) {
-      const error = fromZodError(e);
-      setError(error.message);
+      // const error = fromZodError(e);
+      console.warn("Error with sign in", e);
+      setError(e?.message);
     };
     setLoading(false);
   };
