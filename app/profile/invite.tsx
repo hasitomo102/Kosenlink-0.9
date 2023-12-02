@@ -67,6 +67,7 @@ export default function InviteUsers({ user, invitedUsers, ...divParams }: { user
     } catch (e: any) {
       console.warn(e);
       setError(e);
+      setLoading(false);
     };
     setLoading(false);
   };
