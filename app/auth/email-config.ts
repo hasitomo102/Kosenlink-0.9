@@ -14,7 +14,9 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
   const extraOptions: ExtraEmailOptions = await request.json();
 
   // NOTE: You are not required to use `nodemailer`, use whatever you want.
+  console.log("Creating transport");
   const transport = createTransport(provider.server);
+  console.log("Transport created, sending mail");
   const result = await transport.sendMail({
     to: identifier,
     from: `${extraOptions.senderName || "Neo Open Source"} <${provider.from}>`,
@@ -22,7 +24,8 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
     text: text(extraOptions.emailMessage),
     html: html({ url, emailMessage: extraOptions.emailMessage, buttonText: extraOptions.buttonText, theme }),
   });
-  const failed = result.rejected.concat(result.pending).filter(Boolean);
+  console.log("sent mail");
+  const failed = result?.rejected?.concat(result.pending)?.filter(Boolean);
   if (failed.length) {
     throw new Error(`Email(s) (${failed.join(", ")}) could not be sent`);
   };

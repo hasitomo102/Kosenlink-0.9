@@ -47,7 +47,9 @@ export default function SignIn() {
     setLoading(true);
     // parse the data
     try {
+      console.log("doing the parse for the email");
       const parsedResponse = LoginEmail.safeParse(email);
+      console.log("completed parse");
 
       // throw form validation error with unsuccessful parse
       if (!parsedResponse.success) setError("Please enter a valid email address.");
@@ -56,7 +58,9 @@ export default function SignIn() {
         // check if user is in database
         const emailParams = new URLSearchParams();
         emailParams.set('email', parsedResponse.data);
+        console.log("fetching the user from the api");
         const userResponse = await fetch(`/api/get-user?${emailParams.toString()}`);
+        console.log("fetched user");
         const userData: Partial<User | null> = await userResponse.json();
 
         // if it is a new user, set the referring url in the parameters for the profile screen
@@ -66,7 +70,9 @@ export default function SignIn() {
           setSuccess(true);
         } else {
           // return the normal callback url if user already has an account
+          console.log("signing in user");
           await signIn('email', { email: parsedEmail, callbackUrl, redirect: false });
+          console.log("completed signing in user");
           setSuccess(true);
         }
       }
