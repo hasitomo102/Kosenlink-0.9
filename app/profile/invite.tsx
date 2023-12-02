@@ -1,6 +1,7 @@
 'use client';
 
 import { inviteUser } from "@/app/auth/invite";
+import UsersTable from "@/app/table";
 import { User } from "@/types/user";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { Button, Text, TextInput, Title } from "@tremor/react";
@@ -19,12 +20,15 @@ const InvitedEmail = z.string().email("Please enter a valid email address.");
  * @export
  * @return {*} 
  */
-export default function InviteUsers({ user, ...divParams }: { user?: Partial<User> } & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
+export default function InviteUsers({ user, invitedUsers, ...divParams }: { user?: Partial<User>, invitedUsers?: Partial<User>[] } & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
   // define states
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+
+  // define the invited users
+  const [allInvitedUsers, setInvitedUsers] = useState(invitedUsers || []);
 
   // set callback URL
   // https://next-auth.js.org/getting-started/client#specifying-a-callbackurl
@@ -36,14 +40,20 @@ export default function InviteUsers({ user, ...divParams }: { user?: Partial<Use
     // parse the data
     try {
       const parsedEmail = InvitedEmail.parse(email);
-      await inviteUser(parsedEmail, { 
+      const emailSent = await inviteUser(parsedEmail, { 
         callbackUrl, 
         emailSubject: `${user?.firstName} ${user?.lastName} has invited you to join Neo`,
         emailMessage: `To accept ${user?.firstName}'s invite, click on the link below.`,
         buttonText: `Accept ${user?.firstName}'s invite`,
         senderName: `${user?.firstName} at Neo Tech`
-      });
-      setSuccess(true);
+      }, false);
+
+      // check if email sent or not
+      if (emailSent) {
+        setSuccess(true);
+      } else {
+        setError("User already exists.");
+      }
     } catch (e: any) {
       const zodError: ZodError = e;
       setError(zodError?.format()?._errors?.toString());
@@ -58,7 +68,8 @@ export default function InviteUsers({ user, ...divParams }: { user?: Partial<Use
         <Button onClick={handleInvite} icon={PaperAirplaneIcon} aria-disabled={loading} loading={loading} className="mt-4 w-full">
           Invite User
         </Button>
-        <Text className="mt-1 text-center" color="red">{error}</Text>
+        <Text className="mt-2 text-center" color="red">{error}</Text>
+        <UsersTable users={allInvitedUsers} />
     </div>
   );
 }

@@ -18,12 +18,13 @@ const createProfileCallbackUrl = (windowLocationOrigin: string, callbackUrl?: st
 
 export /**
  * Function will invite user to the application
- *
+ * Will return true or false depending on if an email was sent
+ * 
  * @param {string} email
  * @param {string} windowLocationOrigin
  * @param {string} [callbackUrl]
  */
-const inviteUser = async (email: string, inviteOptions?: Omit<Omit<Omit<ExtraEmailOptions, "email">, "invite">, "emailType">) => {
+const inviteUser = async (email: string, inviteOptions?: Omit<Omit<Omit<ExtraEmailOptions, "email">, "invite">, "emailType">, sendIfUserExists = true) => {
   // set the default options
   const signInOptions: Omit<Omit<ExtraEmailOptions, "email">, "invite"> = {
     buttonText: "Accept Invite",
@@ -45,9 +46,14 @@ const inviteUser = async (email: string, inviteOptions?: Omit<Omit<Omit<ExtraEma
       const newCallbackUrl = createProfileCallbackUrl(window.location.origin, inviteOptions?.callbackUrl);
       delete inviteOptions?.callbackUrl;
       await signIn('email', { email, callbackUrl: newCallbackUrl, redirect: false, invite: true, ...signInOptions });
-    } else {
+      return true;
+    } else if (sendIfUserExists) {
       // return the normal callback url if user already has an account
       await signIn('email', { email, callbackUrl: inviteOptions?.callbackUrl, redirect: false, invite: true, ...signInOptions });
+      return true;
+    } else {
+      // don't send email and just return false
+      return false;
     }
   } catch (e: any) {
     throw Error("Error with inviting user", e);
