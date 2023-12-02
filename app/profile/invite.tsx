@@ -1,9 +1,9 @@
 'use client';
 
 import { inviteUser } from "@/app/auth/invite";
-import { User } from "@/types/user";
-import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
-import { Button, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow, Text, TextInput, Title } from "@tremor/react";
+import { InvitedUser, User } from "@/types/user";
+import { CheckCircleIcon, PaperAirplaneIcon } from "@heroicons/react/24/solid";
+import { Badge, Button, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow, Text, TextInput, Title } from "@tremor/react";
 import { useSearchParams } from "next/navigation";
 import { DetailedHTMLProps, HTMLAttributes, useState } from "react";
 import { z } from "zod";
@@ -19,7 +19,7 @@ const InvitedEmail = z.string().email("Please enter a valid email address.");
  * @export
  * @return {*} 
  */
-export default function InviteUsers({ user, invitedUsers, ...divParams }: { user?: Partial<User>, invitedUsers?: Partial<User>[] } & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
+export default function InviteUsers({ user, invitedUsers, ...divParams }: { user?: Partial<User>, invitedUsers?: Partial<InvitedUser>[] } & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
   // define states
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -56,6 +56,9 @@ export default function InviteUsers({ user, invitedUsers, ...divParams }: { user
   
         // check if email sent or not
         if (emailSent) {
+          // add the user to the front of the array
+          const newInvitedUsers: Partial<InvitedUser>[] = [{ email: parsedEmail, status: "pending" }, ...allInvitedUsers];
+          setInvitedUsers(newInvitedUsers);
           setSuccess(true);
         } else {
           setError("User already exists.");
@@ -76,19 +79,19 @@ export default function InviteUsers({ user, invitedUsers, ...divParams }: { user
           Invite User
         </Button>
         <Text className="mt-2 text-center" color="red">{error}</Text>
-        <Table>
+        <Table className="mt-4">
           <TableHead>
             <TableRow>
-              <TableHeaderCell>Email</TableHeaderCell>
+              <TableHeaderCell>Invited Email</TableHeaderCell>
               <TableHeaderCell>Status</TableHeaderCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {allInvitedUsers.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell>{user.email}</TableCell>
+            {allInvitedUsers.map((invitedUser) => (
+              <TableRow key={invitedUser.id}>
+                <TableCell>{invitedUser.email}</TableCell>
                 <TableCell>
-                  <Text>{user.email}</Text>
+                  <Badge icon={CheckCircleIcon}>Sent</Badge>
                 </TableCell>
               </TableRow>
             ))}
