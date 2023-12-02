@@ -6,7 +6,7 @@ import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { Button, Text, TextInput, Title } from "@tremor/react";
 import { useSearchParams } from "next/navigation";
 import { DetailedHTMLProps, HTMLAttributes, useState } from "react";
-import { z } from "zod";
+import { ZodError, z } from "zod";
 
 // set schema
 const InvitedEmail = z.string().email("Please enter a valid email address.");
@@ -45,8 +45,8 @@ export default function InviteUsers({ user, ...divParams }: { user?: Partial<Use
       });
       setSuccess(true);
     } catch (e: any) {
-      console.warn("Error with invite", e);
-      setError(e?.message);
+      const zodError: ZodError = e;
+      setError(zodError?.format()?._errors?.toString());
     };
     setLoading(false);
   };

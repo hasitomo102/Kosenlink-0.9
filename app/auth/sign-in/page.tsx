@@ -6,7 +6,7 @@ import { Button, Text, TextInput } from "@tremor/react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { z } from "zod";
+import { ZodError, z } from "zod";
 
 // set schema
 const LoginEmail = z.string().email("Please enter a valid email address.");
@@ -66,8 +66,8 @@ export default function SignIn() {
         setSuccess(true);
       }
     } catch (e: any) {
-      console.warn("Error with sign in", e);
-      setError(e?.message);
+      const zodError: ZodError = e;
+      setError(zodError?.format()?._errors?.toString());
     };
     setLoading(false);
   };

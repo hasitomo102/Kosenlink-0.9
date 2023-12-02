@@ -13,7 +13,6 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
   const { identifier, url, provider, theme, request } = params;
   const extraOptions: ExtraEmailOptions = await request.json();
 
-  const { host } = new URL(url);
   // NOTE: You are not required to use `nodemailer`, use whatever you want.
   const transport = createTransport(provider.server);
   const result = await transport.sendMail({
