@@ -6,7 +6,7 @@ import { Button, Text, TextInput } from "@tremor/react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { ZodError, z } from "zod";
+import { z } from "zod";
 
 // set schema
 const LoginEmail = z.string().email("Please enter a valid email address.");
@@ -47,27 +47,32 @@ export default function SignIn() {
     setLoading(true);
     // parse the data
     try {
-      const parsedEmail = LoginEmail.parse(email);
+      const parsedResponse = LoginEmail.safeParse(email);
 
-      // check if user is in database
-      const emailParams = new URLSearchParams();
-      emailParams.set('email', parsedEmail);
-      const userResponse = await fetch(`/api/get-user?${emailParams.toString()}`);
-      const userData: Partial<User | null> = await userResponse.json();
+      // throw form validation error with unsuccessful parse
+      if (!parsedResponse.success) setError("Please enter a valid email address.");
+      else { 
+        const parsedEmail = parsedResponse.data;
+        // check if user is in database
+        const emailParams = new URLSearchParams();
+        emailParams.set('email', parsedResponse.data);
+        const userResponse = await fetch(`/api/get-user?${emailParams.toString()}`);
+        const userData: Partial<User | null> = await userResponse.json();
 
-      // if it is a new user, set the referring url in the parameters for the profile screen
-      if (!userData) {
-        const newCallbackUrl = createProfileCallbackUrl(callbackUrl);
-        await signIn('email', { email: parsedEmail, callbackUrl: newCallbackUrl, redirect: false });
-        setSuccess(true);
-      } else {
-        // return the normal callback url if user already has an account
-        await signIn('email', { email: parsedEmail, callbackUrl, redirect: false });
-        setSuccess(true);
+        // if it is a new user, set the referring url in the parameters for the profile screen
+        if (!userData) {
+          const newCallbackUrl = createProfileCallbackUrl(callbackUrl);
+          await signIn('email', { email: parsedEmail, callbackUrl: newCallbackUrl, redirect: false });
+          setSuccess(true);
+        } else {
+          // return the normal callback url if user already has an account
+          await signIn('email', { email: parsedEmail, callbackUrl, redirect: false });
+          setSuccess(true);
+        }
       }
     } catch (e: any) {
-      const zodError: ZodError = e;
-      setError(zodError?.format()?._errors?.toString());
+      console.warn(e);
+      setError(e);
     };
     setLoading(false);
   };

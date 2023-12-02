@@ -1,13 +1,12 @@
 'use client';
 
 import { inviteUser } from "@/app/auth/invite";
-import UsersTable from "@/app/table";
 import { User } from "@/types/user";
 import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { Button, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow, Text, TextInput, Title } from "@tremor/react";
 import { useSearchParams } from "next/navigation";
 import { DetailedHTMLProps, HTMLAttributes, useState } from "react";
-import { ZodError, z } from "zod";
+import { z } from "zod";
 
 // set schema
 const InvitedEmail = z.string().email("Please enter a valid email address.");
@@ -39,24 +38,32 @@ export default function InviteUsers({ user, invitedUsers, ...divParams }: { user
     setLoading(true);
     // parse the data
     try {
-      const parsedEmail = InvitedEmail.parse(email);
-      const emailSent = await inviteUser(parsedEmail, { 
-        callbackUrl, 
-        emailSubject: `${user?.firstName} ${user?.lastName} has invited you to join Neo`,
-        emailMessage: `To accept ${user?.firstName}'s invite, click on the link below.`,
-        buttonText: `Accept ${user?.firstName}'s invite`,
-        senderName: `${user?.firstName} at Neo Tech`
-      }, false);
+      const parsedResponse = InvitedEmail.safeParse(email);
 
-      // check if email sent or not
-      if (emailSent) {
-        setSuccess(true);
-      } else {
-        setError("User already exists.");
+      // check the parsed data
+      if (!parsedResponse.success) setError("Please enter a valid email address.");
+      else {
+        const parsedEmail = parsedResponse.data;
+
+        // invite the user
+        const emailSent = await inviteUser(parsedEmail, { 
+          callbackUrl, 
+          emailSubject: `${user?.firstName} ${user?.lastName} has invited you to join Neo`,
+          emailMessage: `To accept ${user?.firstName}'s invite, click on the link below.`,
+          buttonText: `Accept ${user?.firstName}'s invite`,
+          senderName: `${user?.firstName} at Neo Tech`
+        }, false);
+  
+        // check if email sent or not
+        if (emailSent) {
+          setSuccess(true);
+        } else {
+          setError("User already exists.");
+        }
       }
     } catch (e: any) {
-      const zodError: ZodError = e;
-      setError(zodError?.format()?._errors?.toString());
+      console.warn(e);
+      setError(e);
     };
     setLoading(false);
   };
@@ -79,7 +86,7 @@ export default function InviteUsers({ user, invitedUsers, ...divParams }: { user
           <TableBody>
             {allInvitedUsers.map((user) => (
               <TableRow key={user.id}>
-                <TableCell>{user.name}</TableCell>
+                <TableCell>{user.email}</TableCell>
                 <TableCell>
                   <Text>{user.email}</Text>
                 </TableCell>
