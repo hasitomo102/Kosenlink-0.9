@@ -1,19 +1,6 @@
 import { createTransport } from "nodemailer";
 import { SendVerificationRequestParams } from "next-auth/providers";
-import { SignInOptions } from "next-auth/react";
-
-/**
- * Define the parameters set in the sign in function
- *
- * @interface VerificationRequestBody
- */
-interface VerificationRequestBody extends Omit<SignInOptions, 'redirect'> {
-  email?: string;
-  callbackUrl?: string;
-  redirect?: 'true' | 'false';
-  invite?: 'true' | 'false';
-  csrfToken?: string;
-}
+import { InviteOptions } from "@/types/auth";
 
 /**
  * Function to send verification request
@@ -25,9 +12,8 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
   const { identifier, url, provider, theme } = params;
 
 
-  const requestbody: VerificationRequestBody = await params.request.json();
+  const requestbody: InviteOptions = await params.request.json();
   console.log("request object", requestbody);
-  console.log("type of redirecr", typeof requestbody.redirect);
   // console.log("verification params body", params.request.body);
   // console.log("verification params headers", params.request.headers);
 
