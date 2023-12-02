@@ -1,5 +1,6 @@
 'use client';
 
+import { inviteUser } from "@/app/auth/invite";
 import { User } from "@/types/user";
 import { CheckCircleIcon, PaperAirplaneIcon, SparklesIcon } from "@heroicons/react/24/solid";
 import { Button, Text, TextInput, Title } from "@tremor/react";
@@ -27,18 +28,6 @@ export default function InviteUsers() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
-  // function that will create the callback url to the profile screen with the query parameters
-  const createProfileCallbackUrl = (callbackUrl: string) => {
-    const params = new URLSearchParams();
-    if (callbackUrl) {
-      params.set('callbackUrl', callbackUrl);
-    } else {
-      params.delete('callbackUrl');
-    };
-
-    return `${window.location.origin}/profile?${params.toString()}`
-  };
-
   // set callback URL
   // https://next-auth.js.org/getting-started/client#specifying-a-callbackurl
   const callbackUrl = useSearchParams().get("callbackUrl") || "/";
@@ -49,23 +38,8 @@ export default function InviteUsers() {
     // parse the data
     try {
       const parsedEmail = InvitedEmail.parse(email);
-
-      // check if user is in database
-      const emailParams = new URLSearchParams();
-      emailParams.set('email', parsedEmail);
-      const userResponse = await fetch(`/api/get-user?${emailParams.toString()}`);
-      const userData: Partial<User | null> = await userResponse.json();
-
-      // if it is a new user, set the referring url in the parameters for the profile screen
-      if (!userData) {
-        const newCallbackUrl = createProfileCallbackUrl(callbackUrl);
-        await signIn('email', { email: parsedEmail, callbackUrl: newCallbackUrl, redirect: false, invite: true });
-        setSuccess(true);
-      } else {
-        // return the normal callback url if user already has an account
-        await signIn('email', { email: parsedEmail, callbackUrl, redirect: false, invite: true });
-        setSuccess(true);
-      }
+      await inviteUser(parsedEmail, { callbackUrl });
+      setSuccess(true);
     } catch (e: any) {
       console.warn("Error with invite", e);
       setError(e?.message);

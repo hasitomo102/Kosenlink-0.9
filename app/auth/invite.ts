@@ -23,19 +23,23 @@ export /**
  * @param {string} windowLocationOrigin
  * @param {string} [callbackUrl]
  */
-const inviteUser = async (email: string, windowLocationOrigin: string, inviteOptions: Omit<InviteOptions, "email">) => {
-  // get the user data avaialable
-  const emailParams = new URLSearchParams();
-  emailParams.set('email', email);
-  const userResponse = await fetch(`/api/get-user?${emailParams.toString()}`);
-  const userData: Partial<User | null> = await userResponse.json();
+const inviteUser = async (email: string, inviteOptions?: Omit<InviteOptions, "email">) => {
+  try {
+    // get the user data avaialable
+    const emailParams = new URLSearchParams();
+    emailParams.set('email', email);
+    const userResponse = await fetch(`/api/get-user?${emailParams.toString()}`);
+    const userData: Partial<User | null> = await userResponse.json();
 
-  // if it is a new user, set the referring url in the parameters for the profile screen
-  if (!userData) {
-    const newCallbackUrl = createProfileCallbackUrl(windowLocationOrigin, inviteOptions.callbackUrl);
-    await signIn('email', { email, callbackUrl: newCallbackUrl, redirect: false, invite: true });
-  } else {
-    // return the normal callback url if user already has an account
-    await signIn('email', { email, callbackUrl: inviteOptions.callbackUrl, redirect: false, invite: true });
+    // if it is a new user, set the referring url in the parameters for the profile screen
+    if (!userData) {
+      const newCallbackUrl = createProfileCallbackUrl(window.location.origin, inviteOptions?.callbackUrl);
+      await signIn('email', { email, callbackUrl: newCallbackUrl, redirect: false, invite: true });
+    } else {
+      // return the normal callback url if user already has an account
+      await signIn('email', { email, callbackUrl: inviteOptions?.callbackUrl, redirect: false, invite: true });
+    }
+  } catch (e: any) {
+    throw Error("Error with inviting user", e);
   }
 };
