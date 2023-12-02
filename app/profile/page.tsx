@@ -80,7 +80,7 @@ export default async function Profile({ searchParams }: { searchParams: { callba
             {!searchParams.callbackUrl ? <SignOutButton className="w-full mt-4" type="button" variant="secondary" email={user?.email} /> : null}
             
       </form>
-      <InviteUsers />
+      <InviteUsers user={user} />
       </div>
     </div>
     )

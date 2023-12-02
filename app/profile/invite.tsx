@@ -2,13 +2,11 @@
 
 import { inviteUser } from "@/app/auth/invite";
 import { User } from "@/types/user";
-import { CheckCircleIcon, PaperAirplaneIcon, SparklesIcon } from "@heroicons/react/24/solid";
+import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 import { Button, Text, TextInput, Title } from "@tremor/react";
-import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { DetailedHTMLProps, HTMLAttributes, useState } from "react";
 import { z } from "zod";
-import { fromZodError } from 'zod-validation-error';
 
 // set schema
 const InvitedEmail = z.string().email("Please enter a valid email address.");
@@ -21,7 +19,7 @@ const InvitedEmail = z.string().email("Please enter a valid email address.");
  * @export
  * @return {*} 
  */
-export default function InviteUsers() {
+export default function InviteUsers({ user, ...divParams }: { user?: Partial<User> } & DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
   // define states
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -48,7 +46,7 @@ export default function InviteUsers() {
   };
 
   return (
-    <div className="mt-10">
+    <div className="mt-10" {...divParams}>
         <Title className="mb-1 ml-1">Invite New Users</Title>
         <TextInput type="email" onSelect={() => setError("")} onValueChange={(val) => setEmail(val)} placeholder="Enter Email" />
         <Button onClick={handleInvite} icon={PaperAirplaneIcon} aria-disabled={loading} loading={loading} className="mt-4 w-full">

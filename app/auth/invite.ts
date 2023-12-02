@@ -34,10 +34,11 @@ const inviteUser = async (email: string, inviteOptions?: Omit<InviteOptions, "em
     // if it is a new user, set the referring url in the parameters for the profile screen
     if (!userData) {
       const newCallbackUrl = createProfileCallbackUrl(window.location.origin, inviteOptions?.callbackUrl);
-      await signIn('email', { email, callbackUrl: newCallbackUrl, redirect: false, invite: true });
+      delete inviteOptions?.callbackUrl;
+      await signIn('email', { email, callbackUrl: newCallbackUrl, redirect: false, ...inviteOptions });
     } else {
       // return the normal callback url if user already has an account
-      await signIn('email', { email, callbackUrl: inviteOptions?.callbackUrl, redirect: false, invite: true });
+      await signIn('email', { email, callbackUrl: inviteOptions?.callbackUrl, redirect: false, ...inviteOptions });
     }
   } catch (e: any) {
     throw Error("Error with inviting user", e);

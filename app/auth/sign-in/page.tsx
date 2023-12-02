@@ -7,7 +7,6 @@ import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { z } from "zod";
-import { fromZodError } from 'zod-validation-error';
 
 // set schema
 const LoginEmail = z.string().email("Please enter a valid email address.");
@@ -67,7 +66,6 @@ export default function SignIn() {
         setSuccess(true);
       }
     } catch (e: any) {
-      // const error = fromZodError(e);
       console.warn("Error with sign in", e);
       setError(e?.message);
     };
