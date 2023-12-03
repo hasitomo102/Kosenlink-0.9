@@ -14,5 +14,5 @@ export interface User extends AuthUser {
 // users that are invited to the platform
 export interface InvitedUser {
     email: string;
-    status: "pending" | "not-accepted" | "accepted";
+    status: "pending" | "not-accepted" | "accepted" | "expired";
 }

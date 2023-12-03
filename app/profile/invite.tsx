@@ -46,7 +46,7 @@ export default function InviteUsers({ user, invitedUsers, ...divParams }: { user
         const parsedEmail = parsedResponse.data;
 
         // invite the user
-        const emailSent = await inviteUser(parsedEmail, { 
+        const emailSent = await inviteUser(parsedEmail, window.location.origin, { 
           callbackUrl, 
           emailSubject: `${user?.firstName} ${user?.lastName} has invited you to join Neo`,
           emailMessage: `To accept ${user?.firstName}'s invite, click on the link below.`,

@@ -24,7 +24,7 @@ export /**
  * @param {string} windowLocationOrigin
  * @param {string} [callbackUrl]
  */
-const inviteUser = async (email: string, inviteOptions?: Omit<Omit<Omit<ExtraEmailOptions, "email">, "invite">, "emailType">, sendIfUserExists = true) => {
+const inviteUser = async (email: string, windowLocationOrigin: string, inviteOptions?: Omit<Omit<Omit<ExtraEmailOptions, "email">, "invite">, "emailType">, sendIfUserExists = true) => {
   // set the default options
   const signInOptions: Omit<Omit<ExtraEmailOptions, "email">, "invite"> = {
     buttonText: "Accept Invite",
@@ -41,15 +41,26 @@ const inviteUser = async (email: string, inviteOptions?: Omit<Omit<Omit<ExtraEma
     const userResponse = await fetch(`/api/get-user?${emailParams.toString()}`);
     const userData: Partial<User | null> = await userResponse.json();
 
+    // set the query params for a new invited user
+    const invitedUserParams = new URLSearchParams();
+    invitedUserParams.set('invitedEmail', email);
+
     // if it is a new user, set the referring url in the parameters for the profile screen
     if (!userData) {
-      const newCallbackUrl = createProfileCallbackUrl(window.location.origin, inviteOptions?.callbackUrl);
-      delete inviteOptions?.callbackUrl;
+      // refer the new user to the profile screen to complete the new account creation
+      const newCallbackUrl = createProfileCallbackUrl(windowLocationOrigin, signInOptions?.callbackUrl);
+      delete signInOptions?.callbackUrl;
       await signIn('email', { email, callbackUrl: newCallbackUrl, redirect: false, invite: true, ...signInOptions });
+  
+      // add the new user to the invited users collection
+      await fetch(`/api/invited-users?${invitedUserParams.toString()}`, {
+        method: 'POST',
+        body: JSON.stringify({ status: "pending" }),
+      });
       return true;
     } else if (sendIfUserExists) {
       // return the normal callback url if user already has an account
-      await signIn('email', { email, callbackUrl: inviteOptions?.callbackUrl, redirect: false, invite: true, ...signInOptions });
+      await signIn('email', { email, callbackUrl: signInOptions?.callbackUrl, redirect: false, invite: true, ...signInOptions });
       return true;
     } else {
       // don't send email and just return false
