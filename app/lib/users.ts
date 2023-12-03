@@ -1,6 +1,6 @@
 import { AuthOptions, auth } from "@/app/auth/config";
-import { fetchCollection, mutateCollection } from "@/app/lib/firebase";
-import { User } from "@/types/user";
+import { fetchCollection, fetchSubcollection, mutateCollection } from "@/app/lib/firebase";
+import { InvitedUser, User } from "@/types/user";
 
 export /**
  * Function will update the user object
@@ -64,4 +64,22 @@ const searchUsers = async (searchString: string): Promise<(Partial<User> & { id:
 
     // return user objects, making sure id is required
     return snapshot.docs.map((userDoc) => ({ ...userDoc.data(), id: userDoc.id }));
+}
+
+
+export /**
+ * Function to fetch all the invited users with a given account
+ *
+ * @param {string} userEmail
+ * @return {*}  {(Promise<(Partial<InvitedUser> & { id: string })[]>)}
+ */
+const getAllInvitedUsers = async (userEmail: string): Promise<(Partial<InvitedUser> & { id: string })[]> => {
+    // get the user
+    const user = await getUserWithEmail(userEmail, true);
+    if (!user) throw Error(`No user with email ${userEmail}`);
+
+    // get all the invited users
+    const querySnapshot = await fetchSubcollection("invited-users", user.id).get();
+
+    return querySnapshot.docs.map((userDoc) => ({ ...userDoc.data(), id: userDoc.id }));
 }

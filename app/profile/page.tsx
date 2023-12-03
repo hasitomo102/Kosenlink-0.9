@@ -6,6 +6,7 @@ import { Text, TextInput } from "@tremor/react";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import InviteUsers from "@/app/profile/invite";
+import { InvitedUser } from "@/types/user";
 
 /**
  * Define the form schema for zod form validation
@@ -25,6 +26,9 @@ export default async function Profile({ searchParams }: { searchParams: { callba
     // fetch the session and user
     const session = await auth();
     const user = await getUserWithEmail(session?.user?.email, true);
+
+    // fetch the invited users
+    const invitedUsers: Partial<InvitedUser>[] = [];
     
   	/**
      * Define the submitting form action
@@ -80,7 +84,7 @@ export default async function Profile({ searchParams }: { searchParams: { callba
             {!searchParams.callbackUrl ? <SignOutButton className="w-full mt-4" type="button" variant="secondary" email={user?.email} /> : null}
             
       </form>
-      <InviteUsers user={user} />
+      <InviteUsers user={user} invitedUsers={invitedUsers} />
       </div>
     </div>
     )
