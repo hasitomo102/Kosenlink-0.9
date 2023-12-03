@@ -1,4 +1,4 @@
-import { AuthOptions, auth } from "@/app/auth/config";
+import { auth } from "@/app/auth/config";
 import { fetchCollection, fetchSubcollection, mutateCollection } from "@/app/lib/firebase";
 import { InvitedUser, User } from "@/types/user";
 
@@ -73,13 +73,12 @@ export /**
  * @param {string} userEmail
  * @return {*}  {(Promise<(Partial<InvitedUser> & { id: string })[]>)}
  */
-const getAllInvitedUsers = async (userEmail: string): Promise<(Partial<InvitedUser> & { id: string })[]> => {
-    // get the user
+const getInvitedUsers = async (userEmail: string, invitedEmail?: string | null): Promise<(Partial<InvitedUser> & { id: string })[]> => {
+    // get the current user
     const user = await getUserWithEmail(userEmail, true);
     if (!user) throw Error(`No user with email ${userEmail}`);
 
-    // get all the invited users
-    const querySnapshot = await fetchSubcollection("invited-users", user.id).get();
-
+    // get all the invited users if no invited email, otherwise only fetch the invites with that email
+    const querySnapshot = invitedEmail ? await fetchSubcollection("invited-users", user.id).where("email", "==", invitedEmail).get() : await fetchSubcollection("invited-users", user.id).get();
     return querySnapshot.docs.map((userDoc) => ({ ...userDoc.data(), id: userDoc.id }));
 }
