@@ -51,7 +51,8 @@ export default function InviteUsers({ user, invitedUsers, ...divParams }: { user
           emailSubject: `${user?.firstName} ${user?.lastName} has invited you to join Neo`,
           emailMessage: `To accept ${user?.firstName}'s invite, click on the link below.`,
           buttonText: `Accept ${user?.firstName}'s invite`,
-          senderName: `${user?.firstName} at Neo Tech`
+          senderName: `${user?.firstName} at Neo Tech`,
+          senderEmail: user?.email || undefined,
         }, false);
   
         // check if email sent or not

@@ -1,7 +1,7 @@
 import SignOutButton from "@/app/components/signout-button";
 import SubmitButton from "@/app/components/submit-form-button";
 import { auth } from "@/app/auth/config";
-import { getUserWithEmail, updateUser } from "@/app/lib/users";
+import { getUserWithEmail, updateInvitedUser, updateUser } from "@/app/lib/users";
 import { Text, TextInput } from "@tremor/react";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -22,10 +22,13 @@ const FormSchema = z.object({
  * @export
  * @return {*} 
  */
-export default async function Profile({ searchParams }: { searchParams: { callbackUrl: string }}) {
+export default async function Profile({ searchParams }: { searchParams: { callbackUrl?: string, senderEmail?: string }}) {
     // fetch the session and user
     const session = await auth();
     const user = await getUserWithEmail(session?.user?.email, true);
+
+    // set the invited user object if the user was invited
+    if (searchParams.senderEmail && user?.email) await updateInvitedUser(searchParams.senderEmail, user.email, "accepted");
 
     // fetch the invited users
     const invitedUsers: Partial<InvitedUser>[] = [];
@@ -84,7 +87,7 @@ export default async function Profile({ searchParams }: { searchParams: { callba
             {!searchParams.callbackUrl ? <SignOutButton className="w-full mt-4" type="button" variant="secondary" email={user?.email} /> : null}
             
       </form>
-      <InviteUsers user={user} invitedUsers={invitedUsers} />
+      {!searchParams.callbackUrl ? <InviteUsers user={user} invitedUsers={invitedUsers} /> : null}
       </div>
     </div>
     )

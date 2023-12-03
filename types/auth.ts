@@ -12,5 +12,6 @@ export interface ExtraEmailOptions {
     emailMessage?: string;
     buttonText?: string;
     senderName?: string;
+    senderEmail?: string;
     emailSubject?: string;
 };

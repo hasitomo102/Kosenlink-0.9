@@ -50,7 +50,7 @@ const inviteUser = async (email: string, windowLocationOrigin: string, inviteOpt
       // refer the new user to the profile screen to complete the new account creation
       const newCallbackUrl = createProfileCallbackUrl(windowLocationOrigin, signInOptions?.callbackUrl);
       delete signInOptions?.callbackUrl;
-      await signIn('email', { email, callbackUrl: newCallbackUrl, redirect: false, invite: true, ...signInOptions });
+      await signIn('email', { email, callbackUrl: newCallbackUrl, redirect: false, invite: true, ...signInOptions }, { senderEmail: signInOptions.senderEmail });
   
       // add the new user to the invited users collection
       await fetch(`/api/invited-users?${invitedUserParams.toString()}`, {
@@ -60,7 +60,7 @@ const inviteUser = async (email: string, windowLocationOrigin: string, inviteOpt
       return true;
     } else if (sendIfUserExists) {
       // return the normal callback url if user already has an account
-      await signIn('email', { email, callbackUrl: signInOptions?.callbackUrl, redirect: false, invite: true, ...signInOptions });
+      await signIn('email', { email, callbackUrl: signInOptions?.callbackUrl, redirect: false, invite: true, ...signInOptions }, { senderEmail: signInOptions.senderEmail });
       return true;
     } else {
       // don't send email and just return false
