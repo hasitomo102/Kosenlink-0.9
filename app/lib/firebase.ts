@@ -1,5 +1,5 @@
 import { Invoice } from "@/types/invoices";
-import { User } from "@/types/user";
+import { InvitedUser, User } from "@/types/user";
 import { initFirestore } from "@auth/firebase-adapter";
 import { cert } from "firebase-admin/app";
 import { FirestoreDataConverter, QueryDocumentSnapshot } from "firebase-admin/firestore";
@@ -27,6 +27,21 @@ export const firestore = initFirestore({
 export interface CollectionTypes {
   "users": User,
   "invoice": Invoice,
+};
+
+/**
+ * Subcollection and their associated types
+ *
+ * @export
+ * @interface SubcollectionTypes
+ */
+export interface SubcollectionTypes {
+	"invited-users": InvitedUser,
+};
+
+// define the parent collections of the subcollections
+const ParentCollection: Record<keyof SubcollectionTypes, keyof CollectionTypes> = {
+	"invited-users": "users",
 };
 
 /**
@@ -68,4 +83,36 @@ const mutateCollection = <T extends keyof CollectionTypes>(
 ) => {
 	const converter = genericConverter<CollectionTypes[T]>() as FirestoreDataConverter<CollectionTypes[T]>;
 	return firestore.collection(collectionName).withConverter<CollectionTypes[T]>(converter);
+};
+
+export /**
+ * Create a subcollection function, using typecasting and the withConverter function to get typed data back from firestore
+ * With fetching, assume return types are all partials
+ * 
+ * @template T
+ * @param {string} collectionName
+ * @return {*}  {CollectionReference<T>}
+ */
+const fetchSubcollection = <T extends keyof SubcollectionTypes>(
+	subcollectionName: T,
+	docID: string,
+) => {
+	const converter = genericConverter<Partial<SubcollectionTypes[T]>>() as FirestoreDataConverter<Partial<SubcollectionTypes[T]>>;
+	return firestore.collection(ParentCollection[subcollectionName]).doc(docID).collection(subcollectionName).withConverter<Partial<SubcollectionTypes[T]>>(converter);
+};
+
+export /**
+ * Create a subcollection function, using typecasting and the withConverter function to get typed data back from firestore
+ * With mutation, make the necessary fields required
+ * 
+ * @template T
+ * @param {string} collectionName
+ * @return {*}  {CollectionReference<T>}
+ */
+const mutateSubcollection = <T extends keyof SubcollectionTypes>(
+	subcollectionName: T,
+	docID: string,
+) => {
+	const converter = genericConverter<SubcollectionTypes[T]>() as FirestoreDataConverter<SubcollectionTypes[T]>;
+	return firestore.collection(ParentCollection[subcollectionName]).doc(docID).collection(subcollectionName).withConverter<SubcollectionTypes[T]>(converter);
 };

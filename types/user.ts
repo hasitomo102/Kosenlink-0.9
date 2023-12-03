@@ -10,3 +10,9 @@ export interface User extends AuthUser {
     firstName: string;
     lastName: string;
 };
+
+// users that are invited to the platform
+export interface InvitedUser {
+    email: string;
+    status: "pending" | "accepted" | "expired";
+}

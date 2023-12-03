@@ -21,7 +21,7 @@ export default function UsersTable({ users }: { users: Partial<User>[] }) {
       <TableBody>
         {users.map((user) => (
           <TableRow key={user.id}>
-            <TableCell>{user.name}</TableCell>
+            <TableCell>{`${user.firstName} ${user.lastName}`}</TableCell>
             <TableCell>
               <Text>{user.email}</Text>
             </TableCell>

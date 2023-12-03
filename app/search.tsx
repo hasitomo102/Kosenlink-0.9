@@ -15,12 +15,12 @@ export default function Search({ disabled }: { disabled?: boolean }) {
       params.set('q', term);
     } else {
       params.delete('q');
-    }
+    };
 
     startTransition(() => {
       replace(`${pathname}?${params.toString()}`);
     });
-  }
+  };
 
   return (
     <div className="relative mt-5 max-w-md">

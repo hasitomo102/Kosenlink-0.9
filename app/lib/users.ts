@@ -1,7 +1,6 @@
-import { AuthOptions } from "@/app/lib/auth";
-import { fetchCollection, mutateCollection } from "@/app/lib/firebase";
-import { User } from "@/types/user";
-import { getServerSession } from "next-auth";
+import { EmailExpirationAge, auth } from "@/app/auth/config";
+import { fetchCollection, fetchSubcollection, mutateCollection, mutateSubcollection } from "@/app/lib/firebase";
+import { InvitedUser, User } from "@/types/user";
 
 export /**
  * Function will update the user object
@@ -11,7 +10,7 @@ export /**
  */
 const updateUser = async (user: { email: string } & Partial<User>) => {
     // check if permissions are correct
-    const session = await getServerSession(AuthOptions);
+    const session = await auth();
     if (session?.user?.email !== user.email) throw Error(`User ${session?.user?.email} does not have the permission to edit ${user.email}`);
 
     // get user snapshot
@@ -65,4 +64,74 @@ const searchUsers = async (searchString: string): Promise<(Partial<User> & { id:
 
     // return user objects, making sure id is required
     return snapshot.docs.map((userDoc) => ({ ...userDoc.data(), id: userDoc.id }));
+}
+
+
+export /**
+ * Function to fetch all the invited users with a given account
+ *
+ * @param {string} userEmail
+ * @return {*}  {(Promise<(Partial<InvitedUser> & { id: string })[]>)}
+ */
+const getInvitedUsers = async (userEmail: string, invitedEmail?: string | null): Promise<(Partial<InvitedUser> & { id: string })[]> => {
+    // get the current user
+    const user = await getUserWithEmail(userEmail, true);
+    if (!user) throw Error(`No user with email ${userEmail}`);
+
+    // get all the invited users if no invited email, otherwise only fetch the invites with that email
+    const querySnapshot = invitedEmail ? await fetchSubcollection("invited-users", user.id).where("email", "==", invitedEmail).get() : await fetchSubcollection("invited-users", user.id).get();
+    return querySnapshot.docs.map((userDoc) => {
+        // get doc data
+        const userData = { ...userDoc.data(), id: userDoc.id };
+
+        // get the time the doc was updated
+        const updateDocTime = userDoc.updateTime.toDate();
+        const currentTime = new Date();
+    
+        // Calculate the time difference in seconds
+        const timeDifferenceInSeconds = Math.floor((currentTime.getTime() - updateDocTime.getTime()) / 1000);
+    
+        // Check if the document is expired based on the threshold
+        if (timeDifferenceInSeconds > EmailExpirationAge && userData.status == "pending") {
+            // update the doc to expired
+            userDoc.ref.update({ status: "expired" });
+            return { ...userData, status: "expired" };
+        };
+        
+        return userData;
+    });
+};
+
+export /**
+ * Function to updated the status of an invited user
+ *
+ * @param {string} userEmail
+ * @param {string} invitedEmail
+ * @param {InvitedUser["status"]} [invitedStatus="pending"]
+ * @return {*}  {(Promise<Partial<InvitedUser> & { id: string }>)}
+ */
+const updateInvitedUser = async (userEmail: string, invitedEmail: string, invitedStatus: InvitedUser["status"] = "pending"): Promise<Partial<InvitedUser> & { id: string }> => {
+    // get the current user
+    const user = await getUserWithEmail(userEmail, true);
+    if (!user) throw Error(`No user with email ${userEmail}`);
+
+    // fetch to see if there are any existing invited users
+    const existingInvitedUsers = await getInvitedUsers(userEmail, invitedEmail);
+    const existingInvitedUser = existingInvitedUsers.at(0);
+
+    // edit the existing invited user
+    if (existingInvitedUser) {
+        await mutateSubcollection("invited-users", user.id).doc(existingInvitedUser.id).update({
+            email: invitedEmail,
+            status: invitedStatus,
+        });
+        return { ...existingInvitedUser, email: invitedEmail, status: invitedStatus };
+    }
+
+    // return a new invited user
+    const newInvitedUser = await mutateSubcollection("invited-users", user.id).add({
+        email: invitedEmail,
+        status: invitedStatus,
+    });
+    return { id: newInvitedUser.id, email: invitedEmail, status: invitedStatus };
 }

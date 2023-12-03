@@ -7,6 +7,7 @@ import { signIn, signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { User } from '@/types/user';
 import Link from 'next/link';
+import { Button } from '@tremor/react';
 
 const navigation = [
   { name: 'Dashboard', href: '/' },
@@ -75,7 +76,7 @@ export default function Navbar({ user }: { user?: Partial<User> }) {
                   <Link href="/profile" className="flex items-center px-4">
                     <div className="mr-3">
                       <div className="text-sm font-medium text-gray-500">
-                        {user.email}
+                        {user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.email}
                       </div>
                     </div>
                     <div className="flex-shrink-0">
@@ -90,13 +91,8 @@ export default function Navbar({ user }: { user?: Partial<User> }) {
                   </Link>
                 </>
               ) : (
-                <div className="mt-3 space-y-1">
-                  <button
-                    onClick={() => signIn('email')}
-                    className="flex w-full px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
-                  >
-                    Sign in
-                  </button>
+                <div className="mt-1 space-y-1">
+                  <Button onClick={() => signIn()} className='flex w-full px-4 py-2 text-base font-medium' variant="light">Sign In</Button>
                 </div>
               )}
                 </Menu>
@@ -148,19 +144,14 @@ export default function Navbar({ user }: { user?: Partial<User> }) {
                     </div>
                     <div className="ml-3">
                       <div className="text-sm font-medium text-gray-500">
-                        {user.email}
+                        {user.firstName && user.lastName ? `${user?.firstName} ${user?.lastName}` : user.email}
                       </div>
                     </div>
                   </Link>
                 </>
               ) : (
-                <div className="mt-3 space-y-1">
-                  <button
-                    onClick={() => signIn('email')}
-                    className="flex w-full px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
-                  >
-                    Sign in
-                  </button>
+                <div className="mt-1 space-y-1">
+                  <Button onClick={() => signIn()} className='flex w-full px-4 py-2 text-base font-medium' variant="light">Sign In</Button>
                 </div>
               )}
             </div>
