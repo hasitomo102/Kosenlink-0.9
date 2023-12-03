@@ -5,13 +5,13 @@ import { signIn } from "next-auth/react";
 import { ExtraEmailOptions } from "@/types/auth";
 
 // function that will create the callback url to the profile screen with the query parameters
-const createProfileCallbackUrl = (windowLocationOrigin: string, callbackUrl?: string) => {
+const createProfileCallbackUrl = (windowLocationOrigin: string, callbackUrl?: string, senderEmail?: string) => {
     const params = new URLSearchParams();
-    if (callbackUrl) {
-        params.set('callbackUrl', callbackUrl);
-    } else {
-        params.delete('callbackUrl');
-    };
+    // set callback URL
+    callbackUrl ? params.set('callbackUrl', callbackUrl) : params.delete('callbackUrl');
+
+    // set sender email
+    senderEmail ? params.set('senderEmail', senderEmail) : params.delete('senderEmail');
 
     return `${windowLocationOrigin}/profile?${params.toString()}`;
 };
@@ -47,20 +47,20 @@ const inviteUser = async (email: string, windowLocationOrigin: string, inviteOpt
 
     // if it is a new user, set the referring url in the parameters for the profile screen
     if (!userData) {
-      // refer the new user to the profile screen to complete the new account creation
-      const newCallbackUrl = createProfileCallbackUrl(windowLocationOrigin, signInOptions?.callbackUrl);
-      delete signInOptions?.callbackUrl;
-      await signIn('email', { email, callbackUrl: newCallbackUrl, redirect: false, invite: true, ...signInOptions }, { senderEmail: signInOptions.senderEmail });
-  
       // add the new user to the invited users collection
       await fetch(`/api/invited-users?${invitedUserParams.toString()}`, {
         method: 'POST',
         body: JSON.stringify({ status: "pending" }),
       });
+
+      // refer the new user to the profile screen to complete the new account creation
+      const newCallbackUrl = createProfileCallbackUrl(windowLocationOrigin, signInOptions?.callbackUrl, signInOptions.senderEmail);
+      delete signInOptions?.callbackUrl;
+      await signIn('email', { email, callbackUrl: newCallbackUrl, redirect: false, invite: true, ...signInOptions });
       return true;
     } else if (sendIfUserExists) {
       // return the normal callback url if user already has an account
-      await signIn('email', { email, callbackUrl: signInOptions?.callbackUrl, redirect: false, invite: true, ...signInOptions }, { senderEmail: signInOptions.senderEmail });
+      await signIn('email', { email, callbackUrl: signInOptions?.callbackUrl, redirect: false, invite: true, ...signInOptions });
       return true;
     } else {
       // don't send email and just return false
