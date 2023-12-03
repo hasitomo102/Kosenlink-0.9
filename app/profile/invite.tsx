@@ -89,7 +89,7 @@ export default function InviteUsers({ user, invitedUsers, ...divParams }: { user
           </TableHead>
           <TableBody>
             {allInvitedUsers.map((invitedUser) => (
-              <TableRow key={invitedUser.id}>
+              <TableRow key={null}>
                 <TableCell>{invitedUser.email}</TableCell>
                 <TableCell>
                   <Badge icon={CheckCircleIcon}>Sent</Badge>

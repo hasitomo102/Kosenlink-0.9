@@ -1,5 +1,5 @@
 import { auth } from "@/app/auth/config";
-import { fetchCollection, fetchSubcollection, mutateCollection } from "@/app/lib/firebase";
+import { fetchCollection, fetchSubcollection, mutateCollection, mutateSubcollection } from "@/app/lib/firebase";
 import { InvitedUser, User } from "@/types/user";
 
 export /**
@@ -81,4 +81,38 @@ const getInvitedUsers = async (userEmail: string, invitedEmail?: string | null):
     // get all the invited users if no invited email, otherwise only fetch the invites with that email
     const querySnapshot = invitedEmail ? await fetchSubcollection("invited-users", user.id).where("email", "==", invitedEmail).get() : await fetchSubcollection("invited-users", user.id).get();
     return querySnapshot.docs.map((userDoc) => ({ ...userDoc.data(), id: userDoc.id }));
+};
+
+export /**
+ * Function to updated the status of an invited user
+ *
+ * @param {string} userEmail
+ * @param {string} invitedEmail
+ * @param {InvitedUser["status"]} [invitedStatus="pending"]
+ * @return {*}  {(Promise<Partial<InvitedUser> & { id: string }>)}
+ */
+const updateInvitedUser = async (userEmail: string, invitedEmail: string, invitedStatus: InvitedUser["status"] = "pending"): Promise<Partial<InvitedUser> & { id: string }> => {
+    // get the current user
+    const user = await getUserWithEmail(userEmail, true);
+    if (!user) throw Error(`No user with email ${userEmail}`);
+
+    // fetch to see if there are any existing invited users
+    const existingInvitedUsers = await getInvitedUsers(userEmail, invitedEmail);
+    const existingInvitedUser = existingInvitedUsers.at(0);
+
+    // edit the existing invited user
+    if (existingInvitedUser) {
+        await mutateSubcollection("invited-users", user.id).doc(existingInvitedUser.id).update({
+            email: invitedEmail,
+            status: invitedStatus,
+        });
+        return { ...existingInvitedUser, email: invitedEmail, status: invitedStatus };
+    }
+
+    // return a new invited user
+    const newInvitedUser = await mutateSubcollection("invited-users", user.id).add({
+        email: invitedEmail,
+        status: invitedStatus,
+    });
+    return { id: newInvitedUser.id, email: invitedEmail, status: invitedStatus };
 }
