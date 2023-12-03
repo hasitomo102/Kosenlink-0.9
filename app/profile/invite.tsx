@@ -2,14 +2,21 @@
 
 import { inviteUser } from "@/app/auth/invite";
 import { InvitedUser, User } from "@/types/user";
-import { CheckCircleIcon, PaperAirplaneIcon } from "@heroicons/react/24/solid";
+import { CheckCircleIcon, ClockIcon, PaperAirplaneIcon, XCircleIcon } from "@heroicons/react/24/solid";
 import { Badge, Button, Table, TableBody, TableCell, TableHead, TableHeaderCell, TableRow, Text, TextInput, Title } from "@tremor/react";
 import { useSearchParams } from "next/navigation";
-import { DetailedHTMLProps, HTMLAttributes, useState } from "react";
+import { DetailedHTMLProps, HTMLAttributes, ReactElement, useState } from "react";
 import { z } from "zod";
 
 // set schema
 const InvitedEmail = z.string().email("Please enter a valid email address.");
+
+// set defined states and the components
+const StatusBadges: Record<InvitedUser["status"], ReactElement> = {
+  "accepted": <Badge color="emerald" icon={CheckCircleIcon}>Accepted</Badge>,
+  "expired": <Badge color="red" icon={XCircleIcon}>Expired</Badge>,
+  "pending": <Badge color="amber" icon={ClockIcon}>Pending</Badge>,
+}
 
 /**
  * Basic invite page screen for new invites
@@ -93,7 +100,7 @@ export default function InviteUsers({ user, invitedUsers, ...divParams }: { user
               <TableRow key={null}>
                 <TableCell>{invitedUser.email}</TableCell>
                 <TableCell>
-                  <Badge icon={CheckCircleIcon}>Sent</Badge>
+                  {invitedUser.status ? StatusBadges[invitedUser.status] : "Unknown"}
                 </TableCell>
               </TableRow>
             ))}

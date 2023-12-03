@@ -1,7 +1,7 @@
 import SignOutButton from "@/app/components/signout-button";
 import SubmitButton from "@/app/components/submit-form-button";
 import { auth } from "@/app/auth/config";
-import { getUserWithEmail, updateInvitedUser, updateUser } from "@/app/lib/users";
+import { getInvitedUsers, getUserWithEmail, updateInvitedUser, updateUser } from "@/app/lib/users";
 import { Text, TextInput } from "@tremor/react";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -31,7 +31,7 @@ export default async function Profile({ searchParams }: { searchParams: { callba
     if (searchParams.senderEmail && user?.email) await updateInvitedUser(searchParams.senderEmail, user.email, "accepted");
 
     // fetch the invited users
-    const invitedUsers: Partial<InvitedUser>[] = [];
+    const invitedUsers: Partial<InvitedUser>[] = session?.user?.email ? await getInvitedUsers(session?.user?.email) : [];
     
   	/**
      * Define the submitting form action
