@@ -1,4 +1,4 @@
-import { auth } from "@/app/auth/config";
+import { EmailExpirationAge, auth } from "@/app/auth/config";
 import { fetchCollection, fetchSubcollection, mutateCollection, mutateSubcollection } from "@/app/lib/firebase";
 import { InvitedUser, User } from "@/types/user";
 
@@ -80,7 +80,26 @@ const getInvitedUsers = async (userEmail: string, invitedEmail?: string | null):
 
     // get all the invited users if no invited email, otherwise only fetch the invites with that email
     const querySnapshot = invitedEmail ? await fetchSubcollection("invited-users", user.id).where("email", "==", invitedEmail).get() : await fetchSubcollection("invited-users", user.id).get();
-    return querySnapshot.docs.map((userDoc) => ({ ...userDoc.data(), id: userDoc.id }));
+    return querySnapshot.docs.map((userDoc) => {
+        // get doc data
+        const userData = { ...userDoc.data(), id: userDoc.id };
+
+        // get the time the doc was updated
+        const updateDocTime = userDoc.updateTime.toDate();
+        const currentTime = new Date();
+    
+        // Calculate the time difference in seconds
+        const timeDifferenceInSeconds = Math.floor((currentTime.getTime() - updateDocTime.getTime()) / 1000);
+    
+        // Check if the document is expired based on the threshold
+        if (timeDifferenceInSeconds > EmailExpirationAge && userData.status == "pending") {
+            // update the doc to expired
+            userDoc.ref.update({ status: "expired" });
+            return { ...userData, status: "expired" };
+        };
+        
+        return userData;
+    });
 };
 
 export /**

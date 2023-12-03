@@ -3,20 +3,9 @@ import { FirestoreAdapter } from "@auth/firebase-adapter";
 import { firestore } from '@/app/lib/firebase';
 import { sendVerificationRequest } from '@/app/auth/email-config';
 
-// set the initial base
-const initialBaseURL =
-	process.env.NEXT_PUBLIC_SITE_URL ??
-	process.env.NEXT_PUBLIC_VERCEL_URL ??
-	"http://localhost:3000/";
-/**
- * The base url for the server side code
- * https://github.com/vercel/next.js/discussions/16429
- * https://vercel.com/docs/concepts/projects/environment-variables/system-environment-variables
- * Defaults to vercel url, will fallback to env variable for local host
- */
-export const BaseURL = initialBaseURL.startsWith("http")
-	? initialBaseURL
-	: `https://${initialBaseURL}`;
+// how long the email link will be valid for, in seconds
+// will set for two days, default is one day
+export const EmailExpirationAge = 2 * 24 * 60 * 60;
 
 // http guide: https://authjs.dev/guides/providers/email-http
 // smtp guide: https://next-auth.js.org/providers/email
@@ -39,7 +28,7 @@ export const AuthOptions = {
         },
       },
       from: process.env.EMAIL_FROM || "",
-      maxAge: 24 * 60 * 60,
+      maxAge: EmailExpirationAge,
       sendVerificationRequest: sendVerificationRequest,
       options: {},
     },
