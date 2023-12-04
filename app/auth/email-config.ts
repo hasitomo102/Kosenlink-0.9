@@ -14,6 +14,7 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
   const extraOptions: ExtraEmailOptions = await request.json();
 
   console.log("NEXTAUTH_URL", process.env.NEXTAUTH_URL);
+  console.log("AUTH_URL", process.env.AUTH_URL);
   console.log("VERCEL_URL", process.env.VERCEL_URL);
   console.log("NEXT_INTERNAL_URL", process.env.NEXTAUTH_URL_INTERNAL);
   console.log("AUTH_REDIRECT_PROXY_URL", process.env.AUTH_REDIRECT_PROXY_URL);
