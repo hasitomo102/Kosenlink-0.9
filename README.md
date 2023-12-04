@@ -1,5 +1,3 @@
-Here is the full README:
-
 <div align="center">
 
 # 🚀 Next.js 14 Web Template
@@ -39,10 +37,10 @@ The template is set up for optimal deployment on Vercel allowing features like p
 
 ### ✅ Prerequisites  
 
-- Node.js 14+  
-- Vercel account
-- Firebase project
-- SendGrid account  
+- [Node.js 14+](https://nodejs.org/en)  
+- [Vercel](https://vercel.com) account
+- [Firebase](https://firebase.google.com/) project
+- [SendGrid](https://sendgrid.com/en-us) account  
 
 ### 📂 Installation
 
@@ -67,13 +65,6 @@ Open http://localhost:3000 to view the app.
 ### 🚢 Deployment  
 
 Deploy on Vercel by pushing to Git (e.g. GitHub) and importing into a Vercel project.  
-
-## ⌨️ Built With   
-
-- [Next.js](https://nextjs.org/)   
-- [NextAuth.js](https://next-auth.js.org/)  
-- [Firebase](https://firebase.google.com/)
-- [Tailwind CSS](https://tailwindcss.com/)  
 
 ## ⚖️ License  
 
