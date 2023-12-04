@@ -27,7 +27,7 @@ export default function SignIn() {
   const [success, setSuccess] = useState(false);
 
   // function that will create the callback url to the profile screen with the query parameters
-  const createProfileCallbackUrl = (callbackUrl: string) => {
+  const createProfileCallbackUrl = (callbackUrl?: string | null) => {
     const params = new URLSearchParams();
     if (callbackUrl) {
       params.set('callbackUrl', callbackUrl);
@@ -40,7 +40,7 @@ export default function SignIn() {
 
   // set callback URL
   // https://next-auth.js.org/getting-started/client#specifying-a-callbackurl
-  const callbackUrl = useSearchParams().get("callbackUrl") || "/";
+  const callbackUrl = useSearchParams().get("callbackUrl") || undefined;
 
   // handle sign in function
   const handleSignIn = async () => {
