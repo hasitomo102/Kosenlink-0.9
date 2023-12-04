@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚀 Next.js 14 Web Template
+# 🚀 Next.js 14 Referrel Web Template
 
 [![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=nextdotjs)](https://nextjs.org/) 
 [![TypeScript](https://img.shields.io/badge/TypeScript-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -29,7 +29,7 @@ This starter template is built on top of the following main dependencies:
 - Linting - [ESLint](https://eslint.org)  
 - Formatting - [Prettier](https://prettier.io)  
 
-This template includes authentication via NextAuth.js with a Firebase adapter. It also implements a referral system using Firebase Functions to generate magic links.  
+This template includes authentication via NextAuth.js with a Firebase adapter. It also implements a referral system using a Firebase backend to generate magic links.  
 
 The template is set up for optimal deployment on Vercel allowing features like preview mode, automatic cache invalidation, and serverless functions.  
 
