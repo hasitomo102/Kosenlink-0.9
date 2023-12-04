@@ -1,65 +1,80 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://user-images.githubusercontent.com/9113740/201498864-2a900c64-d88f-4ed4-b5cf-770bcb57e1f5.png">
-  <source media="(prefers-color-scheme: light)" srcset="https://user-images.githubusercontent.com/9113740/201498152-b171abb8-9225-487a-821c-6ff49ee48579.png">
-  <img alt="Shows all of the tools in the stack for this template, also listed in the README file." src="https://user-images.githubusercontent.com/9113740/201498152-b171abb8-9225-487a-821c-6ff49ee48579.png">
-</picture>
+Here is the full README:
 
-<div align="center"><strong>Next.js 13 Admin Dashboard Template</strong></div>
-<div align="center">Built with the Next.js App Router</div>
-<br />
 <div align="center">
-<a href="http://admin-dash-template.vercel.sh/">Demo</a>
-<span> · </span>
-<a href="https://vercel.com/templates/next.js/admin-dashboard-tailwind-planetscale-react-nextjs">Clone & Deploy</a>
-<span>
+
+# 🚀 Next.js 14 Web Template
+
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=nextdotjs)](https://nextjs.org/) 
+[![TypeScript](https://img.shields.io/badge/TypeScript-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![NextAuth.js](https://img.shields.io/badge/NextAuth.js-black?style=for-the-badge&logo=nextauth&logoColor=white)](https://next-auth.js.org/)
+[![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+[![Tremor](https://img.shields.io/badge/Tremor-FD0061?style=for-the-badge)](https://www.tremor.so)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+
+**Next.js 14** web template with a magic link referral system (inspired by Slack 😎, Notion 📝, and Figma 🎨) built on top of **Next Auth** and **Firebase**. Styled with **Tremor** components and  **Tailwind CSS**.
+
 </div>
 
-## TODO
-* The middleware protection is not working, need to move that to an outside file
+## 🚩 Overview  
 
-## Overview
+This starter template is built on top of the following main dependencies:
 
-This is a starter template using the following stack:
-
-- Framework - [Next.js 13](https://nextjs.org/13)
+- Framework - [Next.js 14](https://nextjs.org/14)
 - Language - [TypeScript](https://www.typescriptlang.org)
-- Auth - [NextAuth.js](https://next-auth.js.org)
-- Database - [Vercel Postgres](https://vercel.com/postgres)
+- Auth - [NextAuth.js](https://next-auth.js.org)  
+- Database - [Firebase](https://firebase.google.com)  
 - Deployment - [Vercel](https://vercel.com/docs/concepts/next.js/overview)
 - Styling - [Tailwind CSS](https://tailwindcss.com)
 - Components - [Tremor](https://www.tremor.so)
 - Analytics - [Vercel Analytics](https://vercel.com/analytics)
-- Linting - [ESLint](https://eslint.org)
-- Formatting - [Prettier](https://prettier.io)
+- Linting - [ESLint](https://eslint.org)  
+- Formatting - [Prettier](https://prettier.io)  
 
-This template uses the new Next.js App Router. This includes support for enhanced layouts, colocation of components, tests, and styles, component-level data fetching, and more.
+This template includes authentication via NextAuth.js with a Firebase adapter. It also implements a referral system using Firebase Functions to generate magic links.  
 
-## Getting Started
+The template is set up for optimal deployment on Vercel allowing features like preview mode, automatic cache invalidation, and serverless functions.  
 
-During the deployment, Vercel will prompt you to create a new Postgres database. This will add the necessary environment variables to your project.
+## 🚀 Getting Started   
 
-Inside the Vercel Postgres dashboard, create a table based on the schema defined in this repository.
+### ✅ Prerequisites  
 
-```
-CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  email VARCHAR(255) NOT NULL,
-  name VARCHAR(255),
-  username VARCHAR(255)
-);
-```
+- Node.js 14+  
+- Vercel account
+- Firebase project
+- SendGrid account  
 
-Insert a row for testing:
+### 📂 Installation
 
-```
-INSERT INTO users (id, email, name, username) VALUES (1, 'me@site.com', 'Me', 'username');
+```  
+git clone https://github.com/yourname/nextjs14-web-template  
+cd nextjs14-web-template
+yarn install  
 ```
 
-Finally, run the following commands to start the development server:
+### ⚙️ Configuration  
+
+Copy `.env.local.example` to `.env.local` and add your Firebase and SendGrid credentials.  
+
+### ▶️ Run development server
 
 ```
-pnpm install
-pnpm dev
-```
+yarn dev
+```   
 
-You should now be able to access the application at http://localhost:3000.
+Open http://localhost:3000 to view the app.  
+
+### 🚢 Deployment  
+
+Deploy on Vercel by pushing to Git (e.g. GitHub) and importing into a Vercel project.  
+
+## ⌨️ Built With   
+
+- [Next.js](https://nextjs.org/)   
+- [NextAuth.js](https://next-auth.js.org/)  
+- [Firebase](https://firebase.google.com/)
+- [Tailwind CSS](https://tailwindcss.com/)  
+
+## ⚖️ License  
+
+MIT License - see [LICENSE.md](LICENSE.md) for more.
