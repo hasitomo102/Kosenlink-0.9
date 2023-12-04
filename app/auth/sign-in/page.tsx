@@ -78,7 +78,7 @@ export default function SignIn() {
       }
     } catch (e: any) {
       console.warn(e);
-      setError(e);
+      if (typeof e === "string") setError(e);
       setLoading(false);
     };
     setLoading(false);
