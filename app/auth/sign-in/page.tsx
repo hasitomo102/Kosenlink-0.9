@@ -71,8 +71,8 @@ export default function SignIn() {
         } else {
           // return the normal callback url if user already has an account
           console.log("signing in user");
-          await signIn('email', { email: parsedEmail, callbackUrl, redirect: false });
-          console.log("completed signing in user");
+          const test = await signIn('email', { email: parsedEmail, callbackUrl, redirect: false });
+          console.log("completed signing in user", test);
           setSuccess(true);
         }
       }

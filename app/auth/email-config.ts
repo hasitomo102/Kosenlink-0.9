@@ -13,6 +13,13 @@ export async function sendVerificationRequest(params: SendVerificationRequestPar
   const { identifier, url, provider, theme, request } = params;
   const extraOptions: ExtraEmailOptions = await request.json();
 
+  console.log("NEXTAUTH_URL", process.env.NEXTAUTH_URL);
+  console.log("VERCEL_URL", process.env.VERCEL_URL);
+  console.log("NEXT_INTERNAL_URL", process.env.NEXTAUTH_URL_INTERNAL);
+  console.log("AUTH_REDIRECT_PROXY_URL", process.env.AUTH_REDIRECT_PROXY_URL);
+  console.log("AUTH_SECRET", process.env.AUTH_SECRET);
+  console.log("NEXTAUTH_SECRET", process.env.NEXTAUTH_SECRET);
+
   // NOTE: You are not required to use `nodemailer`, use whatever you want.
   console.log("Creating transport");
   const transport = createTransport(provider.server);
