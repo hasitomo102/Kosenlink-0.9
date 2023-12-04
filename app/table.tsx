@@ -14,8 +14,8 @@ export default function UsersTable({ users }: { users: Partial<User>[] }) {
     <Table>
       <TableHead>
         <TableRow>
-          <TableHeaderCell>Name</TableHeaderCell>
-          <TableHeaderCell>Email</TableHeaderCell>
+          <TableHeaderCell key="name">Name</TableHeaderCell>
+          <TableHeaderCell key="email">Email</TableHeaderCell>
         </TableRow>
       </TableHead>
       <TableBody>
