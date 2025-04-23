@@ -1,4 +1,4 @@
-import { getUserWithEmail } from "@/lib/users";
+import { getUserWithEmail } from "@/app/lib/users";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
