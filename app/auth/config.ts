@@ -18,7 +18,7 @@ export const AuthOptions = {
     {
       id: 'email',
       name: 'Email',
-      type: 'email',as const,
+      type: 'email' as const,
       server: {
         host: process.env.SMTP_HOST,
         port: Number(process.env.SMTP_PORT),
