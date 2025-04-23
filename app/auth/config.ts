@@ -11,7 +11,7 @@ export const EmailExpirationAge = 2 * 24 * 60 * 60;
 // smtp guide: https://next-auth.js.org/providers/email
 // How to access: https://authjs.dev/guides/upgrade-to-v5?authentication-method=server-component#authentication-methods
 export const AuthOptions = {
-  adapter: FirestoreAdapter(firestore),
+  adapter: FirestoreAdapter(firestore)as any,
   secret: process.env.AUTH_SECRET,
   // https://authjs.dev/getting-started/providers/email-tutorial
   providers: [
