@@ -1,15 +1,8 @@
 // app/auth/options.ts
 import type { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
 
 export const authOptions: NextAuthOptions = {
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
-  ],
-  // 他にもsessionやcallbackなど必要ならここに
+  providers: [], // 認証プロバイダーは後で追加
 };
 
 export default authOptions;
