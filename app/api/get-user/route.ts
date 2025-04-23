@@ -1,16 +1,20 @@
-import { getUserWithEmail } from "@/app/lib/users";
+// app/api/get-user/route.ts
+
+import { getUserWithEmail } from "@/app/lib/users"; // or "@/lib/users" if moved
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const email = searchParams.get("email");
+  const email = request.nextUrl.searchParams.get("email");
 
   if (!email) {
-    return NextResponse.json({ error: "Missing 'email' query parameter" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Missing email" },
+      { status: 400 }
+    );
   }
 
   try {
-    const user = await getUserWithEmail(email, true);
+    const user = await getUserWithEmail(email);
     return NextResponse.json(user || null);
   } catch (error: any) {
     return NextResponse.json(
