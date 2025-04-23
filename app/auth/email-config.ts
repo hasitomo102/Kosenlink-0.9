@@ -11,7 +11,12 @@ import { ExtraEmailOptions } from "@/types/auth";
 export async function sendVerificationRequest(params: SendVerificationRequestParams) {
   // get the parameters and the extra options from the sign in request
   const { identifier, url, provider, theme } = params;
-  const extraOptions = {}; // 今はリクエストから何も取得しない
+  const extraOptions = {
+  senderName: undefined,
+  emailSubject: undefined,
+  emailMessage: undefined,
+  buttonText: undefined,
+};
   console.log("NEXTAUTH_URL", process.env.NEXTAUTH_URL);
   console.log("AUTH_URL", process.env.AUTH_URL);
   console.log("VERCEL_URL", process.env.VERCEL_URL);
