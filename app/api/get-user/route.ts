@@ -1,7 +1,7 @@
-import { getUserWithEmail } from "@/app/lib/users";
+import { getUserWithEmail } from "@/lib/users";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest): Promise<NextResponse<any>> {
+export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const email = searchParams.get("email");
 
