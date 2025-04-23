@@ -1,6 +1,5 @@
-// app/auth/config.ts
 import NextAuth from "next-auth";
-import authOptions from "./options"; // options.tsが存在している前提
+import authOptions from "./options"; // options.ts がある前提
 
 const handler = NextAuth(authOptions);
 
