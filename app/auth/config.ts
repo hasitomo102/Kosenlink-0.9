@@ -36,6 +36,7 @@ export const AuthOptions = {
   pages: {
     signIn: '/auth/sign-in',
   },
+};
 
 export const {
   handlers: { GET, POST },
