@@ -1,5 +1,5 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
-import { FirestoreAdapter } from "@auth/firebase-adapter";
+import { FirestoreAdapter } from "@next-auth/firebase-adapter";
 import { firestore } from '@/app/lib/firebase';
 import { sendVerificationRequest } from '@/app/auth/email-config';
 
