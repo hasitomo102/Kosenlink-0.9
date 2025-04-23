@@ -36,7 +36,6 @@ export const AuthOptions = {
   pages: {
     signIn: '/auth/sign-in',
   },
-} satisfies NextAuthConfig;
 
 export const {
   handlers: { GET, POST },
