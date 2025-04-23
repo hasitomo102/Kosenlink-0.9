@@ -10,9 +10,8 @@ import { ExtraEmailOptions } from "@/types/auth";
  */
 export async function sendVerificationRequest(params: SendVerificationRequestParams) {
   // get the parameters and the extra options from the sign in request
-  const { identifier, url, provider, theme, request } = params;
-  const extraOptions: ExtraEmailOptions = await request.json();
-
+  const { identifier, url, provider, theme } = params;
+  const extraOptions = {}; // 今はリクエストから何も取得しない
   console.log("NEXTAUTH_URL", process.env.NEXTAUTH_URL);
   console.log("AUTH_URL", process.env.AUTH_URL);
   console.log("VERCEL_URL", process.env.VERCEL_URL);
