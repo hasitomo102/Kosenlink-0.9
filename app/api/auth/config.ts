@@ -1,6 +1,6 @@
 // app/auth/config.ts
 import NextAuth from "next-auth";
-import authOptions from "./options"; // ← authの設定ファイル
+import authOptions from "./options"; // すでに仮で作ったやつ
 
 const handler = NextAuth(authOptions);
 
